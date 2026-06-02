@@ -1,0 +1,2708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PCC — Plan My Day</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+/**
+ * styles.css — PCC Plan My Day
+ * All styling for the planner UI and chat drawer.
+ */
+
+/* ─── Reset & Base ───────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin:     0;
+  padding:    0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:  #f5f5f0;
+  min-height:  100vh;
+  display:     flex;
+  justify-content: center;
+  padding:     1rem;
+}
+
+/* ─── Main App Card ──────────────────────────────────────────────────────── */
+
+.app {
+  max-width:     390px;
+  width:         100%;
+  background:    white;
+  border-radius: 20px;
+  padding:       1.25rem 1.25rem 5rem;
+  box-shadow:    0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────────── */
+
+.header {
+  text-align:    center;
+  padding:       1.25rem 0 1rem;
+  border-bottom: 0.5px solid #e8e8e8;
+  margin-bottom: 1.25rem;
+}
+
+.header-sub {
+  font-size:      11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color:          #888;
+  margin-bottom:  4px;
+}
+
+.header-title {
+  font-size:   22px;
+  font-weight: 600;
+  color:       #1a1a1a;
+}
+
+/* ─── Progress Bar ───────────────────────────────────────────────────────── */
+
+.progress-bar {
+  height:        3px;
+  background:    #f0f0f0;
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+  overflow:      hidden;
+}
+
+.progress-fill {
+  height:     100%;
+  background: #D85A30;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ─── Question Labels ────────────────────────────────────────────────────── */
+
+.q-label {
+  font-size:      11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          #D85A30;
+  margin-bottom:  6px;
+}
+
+.q-title {
+  font-size:     17px;
+  font-weight:   600;
+  color:         #1a1a1a;
+  margin-bottom: 4px;
+  line-height:   1.3;
+}
+
+.q-sub {
+  font-size:     13px;
+  color:         #888;
+  margin-bottom: 1.25rem;
+  line-height:   1.4;
+}
+
+/* ─── Option Grid ────────────────────────────────────────────────────────── */
+
+.option-grid {
+  display:               grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:                   8px;
+  margin-bottom:         1rem;
+}
+
+.opt-btn {
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  padding:       12px 10px;
+  text-align:    center;
+  cursor:        pointer;
+  font-size:     12px;
+  color:         #333;
+  transition:    all 0.15s;
+  line-height:   1.4;
+  font-family:   inherit;
+}
+
+.opt-btn:hover {
+  border-color: #ccc;
+  background:   #fafafa;
+}
+
+.opt-btn.selected {
+  border:     1.5px solid #D85A30;
+  background: #FAECE7;
+  color:      #993C1D;
+}
+
+.opt-btn .opt-icon {
+  font-size:     20px;
+  display:       block;
+  margin-bottom: 5px;
+  color:         inherit;
+}
+
+.opt-btn .opt-label {
+  font-weight: 500;
+  display:     block;
+}
+
+.opt-btn .opt-sub {
+  font-size:  11px;
+  color:      #999;
+  display:    block;
+  margin-top: 2px;
+}
+
+.opt-btn.selected .opt-sub {
+  color: #c06040;
+}
+
+/* ─── Select Input ───────────────────────────────────────────────────────── */
+
+select {
+  width:         100%;
+  padding:       11px 12px;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  background:    white;
+  color:         #333;
+  font-size:     14px;
+  font-family:   inherit;
+  margin-bottom: 1rem;
+  appearance:    none;
+}
+
+/* ─── Navigation Buttons ─────────────────────────────────────────────────── */
+
+.nav-row {
+  display:    flex;
+  gap:        8px;
+  margin-top: 0.25rem;
+}
+
+.main-btn {
+  flex:          1;
+  padding:       14px;
+  background:    #D85A30;
+  border:        none;
+  border-radius: 12px;
+  color:         white;
+  font-size:     15px;
+  font-weight:   600;
+  cursor:        pointer;
+  font-family:   inherit;
+  transition:    background 0.15s;
+}
+
+.main-btn:hover    { background: #993C1D; }
+.main-btn:disabled { background: #ddd; color: #aaa; cursor: not-allowed; }
+
+.back-btn {
+  padding:       14px 16px;
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  color:         #666;
+  font-size:     14px;
+  cursor:        pointer;
+  font-family:   inherit;
+  transition:    all 0.15s;
+}
+
+.back-btn:hover { border-color: #ccc; color: #333; }
+
+/* ─── Ticket Cards ───────────────────────────────────────────────────────── */
+
+.pkg-card {
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  padding:       13px 14px;
+  margin-bottom: 8px;
+  cursor:        pointer;
+  transition:    all 0.15s;
+}
+
+.pkg-card:hover    { border-color: #ccc; }
+.pkg-card.selected { border: 1.5px solid #D85A30; background: #FAECE7; }
+
+.pkg-divider {
+  display:     flex;
+  align-items: center;
+  gap:         10px;
+  margin:      14px 0 10px;
+}
+
+.pkg-divider span {
+  font-size:   11px;
+  color:       #aaa;
+  white-space: nowrap;
+}
+
+.pkg-divider::before,
+.pkg-divider::after {
+  content:    '';
+  flex:       1;
+  height:     1px;
+  background: #e8e8e8;
+}
+
+.pkg-name {
+  font-size:     14px;
+  font-weight:   600;
+  color:         #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.pkg-desc {
+  font-size:   12px;
+  color:       #666;
+  line-height: 1.4;
+}
+
+.pkg-badge {
+  display:       inline-block;
+  font-size:     10px;
+  padding:       2px 8px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  font-weight:   500;
+}
+
+.badge-popular { background: #E1F5EE; color: #0F6E56; }
+.badge-show    { background: #E6F1FB; color: #185FA5; }
+.badge-self    { background: #f0f0f0; color: #666;    }
+
+/* ─── Loading State ──────────────────────────────────────────────────────── */
+
+.loading {
+  text-align: center;
+  padding:    3rem 1rem;
+  color:      #999;
+  font-size:  14px;
+}
+
+.loading-name {
+  font-size:     15px;
+  font-weight:   600;
+  color:         #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.loading-dots {
+  display:    inline-flex;
+  gap:        4px;
+  margin-top: 10px;
+}
+
+.loading-dot {
+  width:         7px;
+  height:        7px;
+  border-radius: 50%;
+  background:    #D85A30;
+  animation:     dotPulse 1.2s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.2s; }
+.loading-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40%           { opacity: 1;   transform: scale(1);   }
+}
+
+/* ─── Schedule Result ────────────────────────────────────────────────────── */
+
+.result-greeting {
+  font-size:     14px;
+  color:         #444;
+  line-height:   1.6;
+  margin-bottom: 1.25rem;
+  background:    #f9f9f7;
+  border-radius: 12px;
+  padding:       14px 16px;
+  border-left:   3px solid #D85A30;
+}
+
+.route-badge {
+  display:       flex;
+  align-items:   center;
+  gap:           8px;
+  margin-bottom: 1rem;
+  background:    #f0f7ee;
+  border-radius: 10px;
+  padding:       8px 12px;
+}
+
+.route-badge-icon { font-size: 16px; color: #2D6A2D; }
+
+.route-badge-text {
+  font-size:   12px;
+  color:       #2D6A2D;
+  font-weight: 500;
+}
+
+.sched-section-label {
+  font-size:      11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          #999;
+  margin-bottom:  8px;
+}
+
+.sched-card {
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow:      hidden;
+  margin-bottom: 12px;
+}
+
+.sched-item {
+  display:       flex;
+  gap:           12px;
+  padding:       10px 14px;
+  border-bottom: 0.5px solid #f0f0f0;
+  align-items:   flex-start;
+}
+
+.sched-item:last-child { border-bottom: none; }
+.sched-item.highlight  { background: #fff8f6; }
+
+.sched-time {
+  font-size:   11px;
+  color:       #aaa;
+  min-width:   52px;
+  padding-top: 2px;
+  white-space: nowrap;
+}
+
+.sched-body { flex: 1; }
+
+.sched-village {
+  font-size:      9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color:          #D85A30;
+  margin-bottom:  2px;
+  font-weight:    700;
+}
+
+.sched-title {
+  font-size:     13px;
+  font-weight:   600;
+  color:         #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.sched-desc {
+  font-size:   12px;
+  color:       #666;
+  line-height: 1.45;
+}
+
+.sched-flags {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        4px;
+  margin-top: 4px;
+}
+
+.sched-flag {
+  display:       inline-block;
+  font-size:     9px;
+  padding:       2px 6px;
+  border-radius: 4px;
+  font-weight:   500;
+}
+
+.flag-busy      { background: #FEF3E2; color: #9A5B00; }
+.flag-early     { background: #FAECE7; color: #993C1D; }
+.flag-gem       { background: #E1F5EE; color: #0F6E56; }
+.flag-preshow   { background: #E6F1FB; color: #185FA5; }
+.flag-transport { background: #EEF0FB; color: #3D4AB5; }
+.flag-dont_miss { background: #FAECE7; color: #993C1D; }
+
+/* ─── Info Cards ─────────────────────────────────────────────────────────── */
+
+.info-card {
+  border-radius: 12px;
+  padding:       12px 16px;
+  margin-bottom: 10px;
+}
+
+.info-card.food  { background: #FEF9EC; border: 1px solid #F5DFA0; }
+.info-card.free3 { background: #E1F5EE; border: 1px solid #9FD9C5; }
+
+.info-card-title {
+  font-size:     13px;
+  font-weight:   600;
+  margin-bottom: 3px;
+}
+
+.info-card.food  .info-card-title { color: #7A4F00; }
+.info-card.free3 .info-card-title { color: #0F6E56; }
+
+.info-card-desc { font-size: 12px; line-height: 1.5; }
+
+.info-card.food  .info-card-desc { color: #9A6200; }
+.info-card.free3 .info-card-desc { color: #1D6B50; }
+
+/* ─── Upgrade Card ───────────────────────────────────────────────────────── */
+
+.upgrade-card {
+  background:    #FAEEDA;
+  border:        1.5px solid #EF9F27;
+  border-radius: 12px;
+  padding:       1rem 1.25rem;
+  margin-bottom: 10px;
+}
+
+.upgrade-label {
+  font-size:      10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          #854F0B;
+  margin-bottom:  5px;
+  font-weight:    600;
+}
+
+.upgrade-title {
+  font-size:     14px;
+  font-weight:   600;
+  color:         #633806;
+  margin-bottom: 4px;
+}
+
+.upgrade-desc {
+  font-size:     12px;
+  color:         #854F0B;
+  margin-bottom: 10px;
+  line-height:   1.5;
+}
+
+.upgrade-btn {
+  background:    #BA7517;
+  border:        none;
+  border-radius: 8px;
+  color:         white;
+  padding:       11px 16px;
+  font-size:     13px;
+  font-weight:   600;
+  cursor:        pointer;
+  font-family:   inherit;
+  width:         100%;
+  transition:    background 0.15s;
+}
+
+.upgrade-btn:hover { background: #854F0B; }
+
+/* ─── Restart Button ─────────────────────────────────────────────────────── */
+
+.restart-btn {
+  width:         100%;
+  padding:       12px;
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  color:         #666;
+  font-size:     14px;
+  cursor:        pointer;
+  font-family:   inherit;
+  margin-top:    4px;
+  transition:    all 0.15s;
+}
+
+.restart-btn:hover { border-color: #ccc; color: #333; }
+
+/* ─── Floating Chat Button ───────────────────────────────────────────────── */
+
+.chat-fab {
+  position:      fixed;
+  bottom:        1.5rem;
+  right:         1.5rem;
+  width:         52px;
+  height:        52px;
+  background:    #D85A30;
+  border-radius: 50%;
+  border:        none;
+  color:         white;
+  font-size:     22px;
+  cursor:        pointer;
+  box-shadow:    0 4px 16px rgba(216, 90, 48, 0.4);
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  z-index:       100;
+  transition:    all 0.2s;
+}
+
+.chat-fab:hover {
+  background:  #993C1D;
+  transform:   scale(1.05);
+}
+
+/* ─── Overlay ────────────────────────────────────────────────────────────── */
+
+.overlay {
+  position:       fixed;
+  inset:          0;
+  background:     rgba(0, 0, 0, 0.3);
+  z-index:        150;
+  opacity:        0;
+  pointer-events: none;
+  transition:     opacity 0.3s;
+}
+
+.overlay.show {
+  opacity:        1;
+  pointer-events: all;
+}
+
+/* ─── Chat Drawer ────────────────────────────────────────────────────────── */
+
+.chat-drawer {
+  position:      fixed;
+  bottom:        0;
+  right:         0;
+  width:         100%;
+  max-width:     390px;
+  height:        78vh;
+  background:    white;
+  border-radius: 20px 20px 0 0;
+  box-shadow:    0 -4px 30px rgba(0, 0, 0, 0.15);
+  z-index:       200;
+  display:       flex;
+  flex-direction: column;
+  transform:     translateY(100%);
+  transition:    transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.chat-drawer.open { transform: translateY(0); }
+
+.drawer-handle {
+  width:         36px;
+  height:        4px;
+  background:    #ddd;
+  border-radius: 2px;
+  margin:        10px auto 0;
+  flex-shrink:   0;
+}
+
+.drawer-header {
+  padding:       10px 1.25rem;
+  border-bottom: 0.5px solid #f0f0f0;
+  display:       flex;
+  align-items:   center;
+  gap:           10px;
+  flex-shrink:   0;
+}
+
+.drawer-avatar {
+  width:           34px;
+  height:          34px;
+  background:      #D85A30;
+  border-radius:   50%;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           white;
+  font-size:       15px;
+  flex-shrink:     0;
+}
+
+.drawer-info   { flex: 1; }
+.drawer-name   { font-size: 14px; font-weight: 600; color: #1a1a1a; }
+
+.drawer-status {
+  font-size:   11px;
+  color:       #1D9E75;
+  display:     flex;
+  align-items: center;
+  gap:         4px;
+}
+
+.status-dot {
+  width:         5px;
+  height:        5px;
+  background:    #1D9E75;
+  border-radius: 50%;
+}
+
+.drawer-close {
+  background: none;
+  border:     none;
+  color:      #aaa;
+  font-size:  20px;
+  cursor:     pointer;
+  padding:    4px;
+  display:    flex;
+  align-items: center;
+}
+
+.drawer-close:hover { color: #333; }
+
+/* ─── Chat Messages ──────────────────────────────────────────────────────── */
+
+.chat-area {
+  flex:       1;
+  overflow-y: auto;
+  padding:    0.75rem 1rem 0.25rem;
+  display:    flex;
+  flex-direction: column;
+  gap:        8px;
+}
+
+.msg {
+  display:     flex;
+  gap:         7px;
+  align-items: flex-end;
+}
+
+.msg.user { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width:           26px;
+  height:          26px;
+  background:      #D85A30;
+  border-radius:   50%;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  color:           white;
+  font-size:       12px;
+  flex-shrink:     0;
+}
+
+.msg-bubble {
+  max-width:     80%;
+  padding:       9px 12px;
+  border-radius: 14px;
+  font-size:     13px;
+  line-height:   1.55;
+}
+
+.msg.ai   .msg-bubble { background: #f5f5f2; color: #1a1a1a; border-bottom-left-radius:  3px; }
+.msg.user .msg-bubble { background: #D85A30; color: white;   border-bottom-right-radius: 3px; }
+
+/* ─── Chat Schedule Card ─────────────────────────────────────────────────── */
+
+.mini-sched-card {
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow:      hidden;
+  margin-top:    4px;
+}
+
+.mini-sched-header {
+  background:  #D85A30;
+  padding:     8px 12px;
+  font-size:   12px;
+  font-weight: 600;
+  color:       white;
+}
+
+.mini-sched-item {
+  display:       flex;
+  gap:           8px;
+  padding:       7px 12px;
+  border-bottom: 0.5px solid #f5f5f2;
+  align-items:   flex-start;
+}
+
+.mini-sched-item:last-child { border-bottom: none; }
+
+.mini-time {
+  font-size:   11px;
+  color:       #aaa;
+  min-width:   44px;
+  white-space: nowrap;
+  padding-top: 1px;
+}
+
+.mini-body    { flex: 1; }
+
+.mini-village {
+  font-size:      9px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color:          #D85A30;
+  font-weight:    700;
+}
+
+.mini-title { font-size: 12px; font-weight: 600; color: #1a1a1a; }
+.mini-tip   { font-size: 11px; color: #888; margin-top: 1px; }
+
+/* ─── Typing Indicator ───────────────────────────────────────────────────── */
+
+.typing {
+  display:       flex;
+  align-items:   center;
+  gap:           4px;
+  padding:       9px 12px;
+  background:    #f5f5f2;
+  border-radius: 14px;
+  border-bottom-left-radius: 3px;
+  width:         fit-content;
+}
+
+.typing-dot {
+  width:         5px;
+  height:        5px;
+  border-radius: 50%;
+  background:    #bbb;
+  animation:     typingPulse 1.2s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingPulse {
+  0%, 60%, 100% { opacity: 0.3; transform: scale(0.8); }
+  30%           { opacity: 1;   transform: scale(1);   }
+}
+
+/* ─── Quick Replies ──────────────────────────────────────────────────────── */
+
+.quick-replies {
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        5px;
+  padding:    0.4rem 1rem;
+  flex-shrink: 0;
+}
+
+.qr-btn {
+  background:    white;
+  border:        1px solid #e8e8e8;
+  border-radius: 16px;
+  padding:       5px 10px;
+  font-size:     11px;
+  color:         #555;
+  cursor:        pointer;
+  font-family:   inherit;
+  transition:    all 0.15s;
+  white-space:   nowrap;
+}
+
+.qr-btn:hover { border-color: #D85A30; color: #D85A30; background: #FAECE7; }
+
+/* ─── Chat Input ─────────────────────────────────────────────────────────── */
+
+.input-area {
+  padding:    0.5rem 0.75rem 0.75rem;
+  border-top: 0.5px solid #f0f0f0;
+  display:    flex;
+  gap:        7px;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.input-wrap {
+  flex:          1;
+  background:    #f5f5f2;
+  border-radius: 18px;
+  padding:       7px 12px;
+  display:       flex;
+  align-items:   center;
+}
+
+#userInput {
+  flex:       1;
+  background: none;
+  border:     none;
+  outline:    none;
+  font-size:  13px;
+  font-family: inherit;
+  color:      #1a1a1a;
+  resize:     none;
+  max-height: 70px;
+  line-height: 1.4;
+}
+
+#userInput::placeholder { color: #bbb; }
+
+.send-btn {
+  width:           34px;
+  height:          34px;
+  background:      #D85A30;
+  border:          none;
+  border-radius:   50%;
+  color:           white;
+  cursor:          pointer;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  font-size:       14px;
+  flex-shrink:     0;
+  transition:      background 0.15s;
+}
+
+.send-btn:hover    { background: #993C1D; }
+.send-btn:disabled { background: #ddd; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <div class="header">
+      <div class="header-sub">Polynesian Cultural Center</div>
+      <div class="header-title">Plan My Day</div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div id="questionArea"></div>
+  </div>
+
+  <button class="chat-fab" id="chatFab" onclick="toggleDrawer()" aria-label="Chat with your PCC guide" title="Chat with your guide">
+    <i class="ti ti-message-circle" id="fabIcon" aria-hidden="true"></i>
+  </button>
+
+  <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+
+  <div class="chat-drawer" id="chatDrawer" role="dialog" aria-label="PCC Guide Chat">
+    <div class="drawer-handle" aria-hidden="true"></div>
+    <div class="drawer-header">
+      <div class="drawer-avatar"><i class="ti ti-map-pin" aria-hidden="true"></i></div>
+      <div class="drawer-info">
+        <div class="drawer-name">Your PCC Guide</div>
+        <div class="drawer-status"><div class="status-dot" aria-hidden="true"></div>Online now</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()" aria-label="Close chat"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div class="chat-area" id="chatArea" role="log" aria-live="polite"></div>
+    <div class="quick-replies" id="quickReplies" aria-label="Quick reply suggestions"></div>
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea id="userInput" placeholder="Ask your guide anything..." rows="1" onkeydown="handleChatKey(event)" oninput="autoResizeInput(this)" aria-label="Message your PCC guide"></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send message"><i class="ti ti-send" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <script>
+/**
+ * data.js — PCC Knowledge Base
+ * All static PCC data: show schedules, village layout, adjacency rules,
+ * crowd intelligence, and interest mappings.
+ *
+ * This is the single source of truth. Update show times here and
+ * everything else updates automatically.
+ */
+
+'use strict';
+
+// ─── Village Registry ────────────────────────────────────────────────────────
+// Maps village names to their official PCC map numbers (1–6)
+// Used by the routing engine to validate geographic transitions
+
+const VILLAGE_NUMBER = {
+  samoa:    1,
+  aotearoa: 2,
+  fiji:     3,
+  hawaii:   4,
+  tahiti:   5,
+  tonga:    6,
+};
+
+// Reverse lookup: number → village name
+const VILLAGE_BY_NUMBER = Object.fromEntries(
+  Object.entries(VILLAGE_NUMBER).map(([name, num]) => [num, name])
+);
+
+// ─── Canoe Landings ──────────────────────────────────────────────────────────
+// The lagoon canoe is a one-way ferry used as a transport strategy.
+// Guests board at Hema (south) or Akau (north) and are dropped at the opposite end.
+// Canoe may only be used ONCE per day.
+
+const CANOE = {
+  hema: { label: 'Hema (South Landing)', direction: 'north', opensAt: '13:30', closesAt: '17:00' },
+  akau: { label: 'Akau (North Landing)', direction: 'south', opensAt: '14:00', closesAt: '17:00' },
+};
+
+// ─── Adjacency Rules ─────────────────────────────────────────────────────────
+// Defines whether a guest can walk between two villages, or needs the canoe.
+//
+// Rules:
+//   'ok'     — always walkable
+//   'btw'    — canoe must be inserted BETWEEN these two villages
+//   'before' — canoe must have already been taken earlier in the day
+//   'after'  — canoe must follow immediately after this transition
+//
+// Key format: 'FROM-TO' using village numbers
+
+const ADJACENCY = {
+  '1-2': 'ok',     '1-3': 'ok',     '1-4': 'btw',    '1-5': 'btw',    '1-6': 'ok',
+  '2-1': 'ok',     '2-3': 'ok',     '2-4': 'ok',     '2-5': 'after',  '2-6': 'ok',
+  '3-1': 'ok',     '3-2': 'ok',     '3-4': 'ok',     '3-5': 'after',  '3-6': 'ok',
+  '4-1': 'btw',    '4-2': 'before', '4-3': 'ok',     '4-5': 'ok',     '4-6': 'before',
+  '5-1': 'before', '5-2': 'before', '5-3': 'before', '5-4': 'before', '5-6': 'before',
+  '6-1': 'ok',     '6-2': 'ok',     '6-3': 'ok',     '6-4': 'after',  '6-5': 'after',
+};
+
+// ─── Daily Presentation Schedule ─────────────────────────────────────────────
+// Each village has named shows with specific start times (24hr HH:MM format).
+// All presentations run approximately 20 minutes.
+// Guests should arrive ~10 minutes early for Samoa shows (pre-show).
+
+const SHOWS = {
+  samoa: {
+    'Tree of Life':               ['12:30', '14:00', '15:00', '16:30'],
+    'Traditional Cooking':        ['13:30', '14:30'],
+    'Traditional Food Tasting':   ['15:30'],
+    'Tree of Life & Fire Knife':  ['15:30', '16:00'],
+  },
+  aotearoa: {
+    'Te Whare Tapere':            ['12:30', '17:00'],
+    'Toi Whakaari Māori':         ['14:00', '15:00', '16:00'],
+    'Mau Rākau (Māori Weaponry)': ['14:30', '15:30'],
+  },
+  fiji: {
+    'Derua Instrument Activity':          ['12:30', '17:00'],
+    'Canoe & Navigation Stories':         ['13:30', '16:30'],
+    'Migration through Chants & Dance':   ['14:00', '15:00', '16:00'],
+    'Derua Presentation':                 ['14:30', '15:30'],
+  },
+  hawaii: {
+    "Kūpa'a Hawai'i: Stories of Aloha":  ['13:30', '14:30', '15:30', '16:30', '17:00'],
+  },
+  tahiti: {
+    'Rhythms of the Islands':     ['12:30', '13:30', '16:30'],
+    'Tahiti Dance':                ['14:00', '15:00'],
+    'Tahitian Wedding Ceremony':  ['14:30', '15:30'],
+    'Intro to French Polynesia':  ['14:30'],
+  },
+  tonga: {
+    'Cultural Core Values':            ['12:30'],
+    'Cultural Core Values & the Nafa': ['14:00', '15:00', '16:00', '16:30'],
+  },
+};
+
+// ─── Special Events ───────────────────────────────────────────────────────────
+// Events that aren't tied to a specific village but are part of the day.
+
+const SPECIAL_EVENTS = {
+  huki: {
+    title: 'Huki — A Canoe Celebration',
+    time: '13:00',
+    endTime: '13:20',
+    desc: "Head to the lagoon — this canoe-side show only happens once a day. Don't miss it!",
+    note: 'Previously ran at 12:40 PM — moved to 1:00 PM so more guests can catch it. Weather permitting.',
+  },
+};
+
+// ─── Crowd Intelligence ───────────────────────────────────────────────────────
+// Flags and notes for shows that require special timing attention.
+// Used by the routing engine to add arrival warnings to the schedule.
+
+const CROWD_FLAGS = {
+  'Tree of Life & Fire Knife':       { flag: 'busy_early',   note: 'Most watched show of the day — arrive 10+ mins early. Pre-show starts 10 mins before!' },
+  'Tree of Life':                    { flag: 'preshow',      note: 'Pre-show starts 10 mins before — arrive early!' },
+  'Traditional Cooking':             { flag: 'preshow',      note: 'Pre-show starts 10 mins before!' },
+  'Traditional Food Tasting':        { flag: 'preshow',      note: 'Pre-show starts 10 mins before!' },
+  'Tahitian Wedding Ceremony':       { flag: 'indoor_small', note: 'Small indoor venue — arrive 5-10 mins early' },
+  'Migration through Chants & Dance':{ flag: 'early',        note: 'Popular show — arrive a few mins early' },
+  'Cultural Core Values & the Nafa': { flag: 'early',        note: 'Popular show — large outdoor venue' },
+  'Derua Presentation':              { flag: 'gem',          note: '💎 Hidden gem — worth seeking out' },
+  'Tahiti Dance':                    { flag: 'gem',          note: '💎 Local favorite — most guests miss this one' },
+};
+
+// ─── Interest → Show Preferences ─────────────────────────────────────────────
+// Maps guest interest types to specific show names they'd enjoy most.
+// The routing engine uses this to select the best show within a village.
+
+const INTEREST_SHOWS = {
+  watch_performances: [
+    'Toi Whakaari Māori',
+    'Rhythms of the Islands',
+    'Tahitian Wedding Ceremony',
+    "Kūpa'a Hawai'i: Stories of Aloha",
+    'Cultural Core Values & the Nafa',
+    'Tree of Life & Fire Knife',
+  ],
+  hands_on: [
+    'Derua Presentation',
+    'Traditional Cooking',
+    'Traditional Food Tasting',
+    'Mau Rākau (Māori Weaponry)',
+  ],
+  learn_history: [
+    'Toi Whakaari Māori',
+    'Intro to French Polynesia',
+    'Te Whare Tapere',
+    'Cultural Core Values',
+  ],
+  food: [
+    'Traditional Cooking',
+    'Traditional Food Tasting',
+    'Derua Presentation',
+  ],
+};
+
+// ─── Group Type → Village Priority ───────────────────────────────────────────
+// Default village ordering based on group type.
+// Cultural connection and interests override this in the routing engine.
+
+const GROUP_VILLAGE_PRIORITY = {
+  family_kids:  ['samoa', 'hawaii', 'fiji',     'tonga',    'aotearoa', 'tahiti'],
+  family_teens: ['samoa', 'aotearoa', 'fiji',   'tonga',    'hawaii',   'tahiti'],
+  couple:       ['tahiti', 'aotearoa', 'tonga', 'fiji',     'hawaii',   'samoa'],
+  friends:      ['fiji',  'samoa',    'tahiti', 'aotearoa', 'tonga',    'hawaii'],
+  solo:         ['samoa', 'tahiti',   'aotearoa','fiji',    'tonga',    'hawaii'],
+};
+
+// ─── Interest → Village Boost ─────────────────────────────────────────────────
+// Interests can push specific villages higher in the priority list.
+
+const INTEREST_VILLAGE_BOOST = {
+  watch_performances: ['tahiti', 'tonga', 'hawaii'],
+  hands_on:           ['fiji',   'samoa', 'aotearoa'],
+  learn_history:      ['aotearoa', 'fiji', 'tonga'],
+  food:               ['samoa',  'fiji',  'hawaii'],
+};
+
+// ─── Ticket Types ─────────────────────────────────────────────────────────────
+
+const TICKETS = {
+  islands: {
+    id: 'islands',
+    name: 'Islands of Polynesia',
+    desc: 'Self-guided tour through all 6 island villages',
+    hasDinner: false,
+    hasShow: false,
+    badge: null,
+  },
+  'islands-ha': {
+    id: 'islands-ha',
+    name: 'Islands of Polynesia + Hā Show',
+    desc: 'Self-guided villages + Hā: Breath of Life evening show',
+    hasDinner: false,
+    hasShow: true,
+    badge: 'show',
+  },
+  gateway: {
+    id: 'gateway',
+    name: 'Gateway Buffet',
+    desc: 'Self-guided villages + island buffet dinner + Hā Silver seating',
+    hasDinner: true,
+    hasShow: true,
+    badge: 'popular',
+    dinnerTitle: 'Gateway Buffet',
+    dinnerDesc: "Gateway Buffet opens at 4:30 PM and runs until 6:30 PM — head over when you're ready.",
+  },
+  'self-alii': {
+    id: 'self-alii',
+    name: "Self-Guided Ali'i Lū'au",
+    desc: "Declined guided tour — Ali'i Lu'au dinner + Hā Gold seating",
+    hasDinner: true,
+    hasShow: true,
+    badge: 'self',
+    divider: true,
+    dinnerTitle: "Ali'i Lu'au",
+    dinnerDesc: "The Ali'i Lu'au venue opens at 4:30 PM — get settled in. The show officially starts at 5:00 PM.",
+  },
+};
+
+// ─── Busy Day Detection ───────────────────────────────────────────────────────
+// PCC is historically busier on certain days of the week.
+// Used to adjust "arrive early" recommendations.
+
+const BUSY_DAYS = new Set([1, 4, 5]); // Monday (after Sunday closure), Thursday, Friday (school groups)
+
+// ─── Timing Constants ─────────────────────────────────────────────────────────
+
+const TIMING = {
+  SHOW_DURATION_MIN:    20, // minutes a show runs
+  WALK_BUFFER_MIN:       5, // buffer between stops for walking
+  CANOE_DURATION_MIN:   15, // canoe ride duration
+  MAX_SCHEDULE_GAP_MIN: 120, // don't schedule a show more than 2hrs ahead of current time
+  DINNER_CUTOFF:        '16:00', // last village show time if guest has dinner
+  HA_SEATING:           '19:00', // Hā: Breath of Life seating opens
+};
+/**
+ * routing.js — PCC Routing Engine
+ *
+ * Builds a geographically valid, personalized day schedule for a guest.
+ * Enforces:
+ *   - One village per day (no repeat visits)
+ *   - No overlapping show times (25-min minimum gap)
+ *   - Adjacency rules (can't jump across the center without canoe)
+ *   - Canoe used at most once per day
+ *   - Last show cutoff if guest has dinner
+ *   - End-of-day south positioning (near exit)
+ *
+ * Dependencies: data.js
+ */
+
+'use strict';
+
+// ─── Time Utilities ───────────────────────────────────────────────────────────
+
+/**
+ * Convert "HH:MM" string to minutes since midnight.
+ * @param {string} time - e.g. "13:30"
+ * @returns {number}
+ */
+function toMinutes(time) {
+  const [hours, mins] = time.split(':').map(Number);
+  return hours * 60 + mins;
+}
+
+/**
+ * Convert minutes since midnight to a display string like "1:30 PM".
+ * @param {number} totalMins
+ * @returns {string}
+ */
+function toDisplayTime(totalMins) {
+  const hours = Math.floor(totalMins / 60);
+  const mins  = totalMins % 60;
+  const ampm  = hours >= 12 ? 'PM' : 'AM';
+  const h12   = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+  return `${h12}:${String(mins).padStart(2, '0')} ${ampm}`;
+}
+
+/**
+ * Convert "HH:MM" to display string.
+ * @param {string} time
+ * @returns {string}
+ */
+function timeToDisplay(time) {
+  return toDisplayTime(toMinutes(time));
+}
+
+// ─── Adjacency Validation ─────────────────────────────────────────────────────
+
+/**
+ * Check whether moving from one village to another is geographically valid
+ * given the current canoe state.
+ *
+ * @param {string} fromVillage
+ * @param {string} toVillage
+ * @param {boolean} canoeUsed - whether the canoe has already been taken today
+ * @param {boolean} canoeIsNext - whether the canoe will be the very next stop
+ * @returns {boolean}
+ */
+function isTransitionValid(fromVillage, toVillage, canoeUsed, canoeIsNext) {
+  if (!fromVillage || !toVillage) return true;
+
+  const fromNum = VILLAGE_NUMBER[fromVillage];
+  const toNum   = VILLAGE_NUMBER[toVillage];
+  const rule    = ADJACENCY[`${fromNum}-${toNum}`];
+
+  if (!rule || rule === 'ok') return true;
+  if (rule === 'before')      return canoeUsed;
+  if (rule === 'after')       return canoeIsNext;
+  if (rule === 'btw')         return false; // canoe must go between — handled separately
+
+  return true;
+}
+
+// ─── Canoe Helpers ────────────────────────────────────────────────────────────
+
+/**
+ * Get the earliest available canoe time after a given minute,
+ * based on which landing is being used.
+ *
+ * @param {number} afterMin - earliest the canoe can depart
+ * @param {'north'|'south'} direction - north = Hema (south landing), south = Akau (north landing)
+ * @returns {number|null} minutes since midnight, or null if canoe window is closed
+ */
+function getNextCanoeTime(afterMin, direction) {
+  const landing   = direction === 'north' ? CANOE.hema : CANOE.akau;
+  const opensMin  = toMinutes(landing.opensAt);
+  const closesMin = toMinutes(landing.closesAt);
+  const earliest  = Math.max(afterMin, opensMin);
+
+  return earliest < closesMin ? earliest : null;
+}
+
+/**
+ * Determine which direction to ride the canoe based on destination village.
+ *
+ * @param {string} toVillage
+ * @returns {'north'|'south'}
+ */
+function getCanoeDirection(toVillage) {
+  const northVillages = new Set([4, 5]); // Hawaii, Tahiti
+  return northVillages.has(VILLAGE_NUMBER[toVillage]) ? 'north' : 'south';
+}
+
+/**
+ * Build a canoe stop object for insertion into the schedule.
+ *
+ * @param {number} timeMin - departure time in minutes since midnight
+ * @param {'north'|'south'} direction
+ * @returns {Object} schedule stop
+ */
+function buildCanoeStop(timeMin, direction) {
+  const landing = direction === 'north' ? CANOE.hema : CANOE.akau;
+  const dest    = direction === 'north' ? 'northern villages' : 'southern villages';
+
+  return {
+    time:      toDisplayTime(timeMin),
+    timeMin,
+    type:      'canoe',
+    village:   'Lagoon',
+    title:     `Canoe Ride — ${landing.label}`,
+    desc:      `Board at ${landing.label} and ride to the ${dest}. One-way scenic trip — canoes run continuously, just show up.`,
+    flags:     ['transport'],
+  };
+}
+
+// ─── Show Selection ───────────────────────────────────────────────────────────
+
+/**
+ * Find the best available show for a village, respecting timing and guest interests.
+ *
+ * Scoring: interest-matching shows are preferred; otherwise pick the
+ * soonest available show after the current time.
+ *
+ * @param {string} village
+ * @param {number} afterMin - earliest the show can start
+ * @param {string[]} preferredShows - show names matching guest interests
+ * @param {number} cutoffMin - latest the show can start
+ * @returns {{ name: string, time: string, timeMin: number }|null}
+ */
+function getBestShow(village, afterMin, preferredShows, cutoffMin) {
+  const villageShows = SHOWS[village];
+  if (!villageShows) return null;
+
+  let best      = null;
+  let bestScore = -1;
+  let bestDiff  = Infinity;
+
+  for (const [name, times] of Object.entries(villageShows)) {
+    for (const time of times) {
+      const timeMin = toMinutes(time);
+
+      if (timeMin < afterMin)  continue; // too early
+      if (timeMin > cutoffMin) continue; // past cutoff
+      if (timeMin - afterMin > TIMING.MAX_SCHEDULE_GAP_MIN * 60 / 60) continue; // too far ahead
+
+      const diff          = timeMin - afterMin;
+      const interestScore = preferredShows.includes(name) ? 1 : 0;
+
+      if (interestScore > bestScore || (interestScore === bestScore && diff < bestDiff)) {
+        bestScore = interestScore;
+        bestDiff  = diff;
+        best      = { name, time, timeMin };
+      }
+    }
+  }
+
+  return best;
+}
+
+/**
+ * Get the list of preferred show names based on guest interests.
+ *
+ * @param {string[]} interests
+ * @returns {string[]}
+ */
+function getPreferredShows(interests) {
+  const preferred = new Set();
+  (interests || []).forEach(interest => {
+    (INTEREST_SHOWS[interest] || []).forEach(show => preferred.add(show));
+  });
+  return [...preferred];
+}
+
+// ─── Village Priority ─────────────────────────────────────────────────────────
+
+/**
+ * Build an ordered list of villages based on cultural connection,
+ * guest interests, and group type.
+ *
+ * Priority order:
+ *   1. Cultural connection (highest)
+ *   2. Interest-boosted villages
+ *   3. Group type defaults
+ *
+ * @param {string} group
+ * @param {string[]} interests
+ * @param {string[]} connection - cultural connections, may include 'none'
+ * @returns {string[]} ordered village names
+ */
+function getPriorityVillages(group, interests, connection) {
+  const priority = [];
+
+  const addUnique = (village) => {
+    if (!priority.includes(village)) priority.push(village);
+  };
+
+  // 1. Cultural connection wins
+  (connection || [])
+    .filter(c => c !== 'none')
+    .forEach(addUnique);
+
+  // 2. Interest-based boosts
+  (interests || []).forEach(interest => {
+    (INTEREST_VILLAGE_BOOST[interest] || []).forEach(addUnique);
+  });
+
+  // 3. Group type defaults fill the rest
+  const defaults = GROUP_VILLAGE_PRIORITY[group] || GROUP_VILLAGE_PRIORITY.solo;
+  defaults.forEach(addUnique);
+
+  return priority;
+}
+
+// ─── Stop Builder ─────────────────────────────────────────────────────────────
+
+/**
+ * Build a village show stop, enforcing the one-village-per-day rule.
+ * Returns null if this village has already been visited.
+ *
+ * @param {string} village
+ * @param {string} showName
+ * @param {string} time - HH:MM format
+ * @param {boolean} isBusy - busy day flag (adjusts crowd note language)
+ * @param {Set<string>} usedVillages - tracks visited villages
+ * @param {boolean} [highlight=false] - highlight this as the crown jewel stop
+ * @returns {Object|null}
+ */
+function buildShowStop(village, showName, time, isBusy, usedVillages, highlight = false) {
+  // Enforce one village per day
+  if (usedVillages.has(village)) return null;
+  usedVillages.add(village);
+
+  const timeMin   = toMinutes(time);
+  const crowdInfo = CROWD_FLAGS[showName];
+  const flags     = [];
+  let   desc      = '';
+
+  if (crowdInfo) {
+    // On busy days, escalate "arrive a few mins early" warnings
+    flags.push(isBusy && crowdInfo.flag === 'early' ? 'busy_early' : crowdInfo.flag);
+    desc = isBusy
+      ? crowdInfo.note.replace('5-10 mins', '10-15 mins').replace('a few mins', '7-10 mins')
+      : crowdInfo.note;
+  }
+
+  return {
+    time: timeToDisplay(time),
+    timeMin,
+    type:      'show',
+    village:   village.charAt(0).toUpperCase() + village.slice(1),
+    title:     showName,
+    desc,
+    flags,
+    highlight,
+  };
+}
+
+// ─── Route Builders ───────────────────────────────────────────────────────────
+
+/**
+ * Build the main schedule using smart geographic routing.
+ * Phases:
+ *   1. Huki (if arriving in time)
+ *   2. South villages (saving Samoa for 4PM fire knife)
+ *   3. Canoe north (if north villages are in priority)
+ *   4. North villages (Tahiti → Hawaii, working back south)
+ *   5. Middle villages (Aotearoa, Fiji)
+ *   6. 4PM Samoa Fire Knife (crown jewel)
+ *
+ * @param {number} arrMin
+ * @param {string[]} priority - ordered village names
+ * @param {string[]} preferredShows
+ * @param {boolean} isBusy
+ * @param {number} lastShowCutoff - latest a show can start
+ * @returns {Object[]} schedule stops
+ */
+function buildSmartRoute(arrMin, priority, preferredShows, isBusy, lastShowCutoff) {
+  const stops       = [];
+  const usedVillages = new Set();
+  let   curMin       = arrMin;
+  let   lastVillage  = null;
+  let   canoeUsed    = false;
+
+  /**
+   * Helper: append a stop and advance the clock.
+   * @param {Object} stop
+   */
+  function addStop(stop) {
+    if (!stop) return;
+    stops.push(stop);
+    curMin = stop.timeMin + TIMING.SHOW_DURATION_MIN + TIMING.WALK_BUFFER_MIN;
+    if (stop.type === 'canoe') canoeUsed = true;
+    if (stop.type === 'show') lastVillage = stop.village.toLowerCase();
+  }
+
+  // ── Phase 1: Huki ──
+  const hukiMin = toMinutes(SPECIAL_EVENTS.huki.time);
+  if (arrMin <= hukiMin) {
+    addStop({
+      time:    timeToDisplay(SPECIAL_EVENTS.huki.time),
+      timeMin: hukiMin,
+      type:    'huki',
+      village: 'All Villages',
+      title:   SPECIAL_EVENTS.huki.title,
+      desc:    SPECIAL_EVENTS.huki.desc,
+      flags:   ['dont_miss'],
+    });
+    curMin = toMinutes(SPECIAL_EVENTS.huki.endTime);
+  }
+
+  // Separate villages by geographic zone
+  const southVillages  = priority.filter(v => ['samoa', 'tonga'].includes(v));
+  const northVillages  = priority.filter(v => ['tahiti', 'hawaii'].includes(v));
+  const middleVillages = priority.filter(v => ['aotearoa', 'fiji'].includes(v));
+  const goingNorth     = northVillages.length > 0;
+
+  // ── Phase 2: South villages (before canoe) ──
+  // Skip Samoa here — save it for the 4PM Fire Knife finale
+  const phase2 = southVillages.filter(v => v !== 'samoa');
+  for (const village of phase2) {
+    if (usedVillages.has(village)) continue;
+    const show = getBestShow(village, curMin, preferredShows, lastShowCutoff);
+    if (!show) continue;
+    if (!isTransitionValid(lastVillage, village, canoeUsed, false)) continue;
+    addStop(buildShowStop(village, show.name, show.time, isBusy, usedVillages));
+  }
+
+  // ── Phase 3: Canoe north (if north villages are in priority) ──
+  if (goingNorth && !canoeUsed && curMin <= toMinutes('16:30')) {
+    const canoeMin = getNextCanoeTime(curMin, 'north');
+    if (canoeMin) addStop(buildCanoeStop(canoeMin, 'north'));
+  }
+
+  // ── Phase 4: North villages (Tahiti first — farthest, then work back) ──
+  const phase4 = [...northVillages, ...middleVillages.filter(v => !usedVillages.has(v))];
+  for (const village of phase4) {
+    if (usedVillages.has(village)) continue;
+    const show = getBestShow(village, curMin, preferredShows, lastShowCutoff);
+    if (!show) continue;
+    if (!isTransitionValid(lastVillage, village, canoeUsed, false)) continue;
+    addStop(buildShowStop(village, show.name, show.time, isBusy, usedVillages));
+  }
+
+  // ── Phase 5: Remaining middle villages ──
+  for (const village of middleVillages) {
+    if (usedVillages.has(village)) continue;
+    if (curMin >= toMinutes('15:30')) break; // reserve time for fire knife
+    const show = getBestShow(village, curMin, preferredShows, lastShowCutoff);
+    if (!show) continue;
+    if (!isTransitionValid(lastVillage, village, canoeUsed, false)) continue;
+    addStop(buildShowStop(village, show.name, show.time, isBusy, usedVillages));
+  }
+
+  // ── Phase 6: 4PM Samoa Fire Knife — crown jewel ──
+  const fireKnifeMin    = toMinutes('16:00');
+  const preShowBufferMin = toMinutes('15:40'); // arrive by 3:40 for pre-show
+
+  if (!usedVillages.has('samoa') && curMin <= preShowBufferMin && fireKnifeMin <= lastShowCutoff) {
+    // If coming from a north village and canoe not yet used, ride back south first
+    if (lastVillage && ['hawaii', 'tahiti'].includes(lastVillage) && !canoeUsed) {
+      const canoeMin = getNextCanoeTime(curMin, 'south');
+      if (canoeMin && canoeMin + TIMING.CANOE_DURATION_MIN <= preShowBufferMin) {
+        addStop(buildCanoeStop(canoeMin, 'south'));
+        lastVillage = null;
+      }
+    }
+
+    if (isTransitionValid(lastVillage, 'samoa', canoeUsed, false)) {
+      const fireKnifeStop = buildShowStop('samoa', 'Tree of Life & Fire Knife', '16:00', isBusy, usedVillages, true);
+      addStop(fireKnifeStop);
+    }
+  } else if (!usedVillages.has('samoa')) {
+    // Missed fire knife window — get the best available Samoa show instead
+    const samoaShow = getBestShow('samoa', curMin, preferredShows, lastShowCutoff);
+    if (samoaShow && isTransitionValid(lastVillage, 'samoa', canoeUsed, false)) {
+      addStop(buildShowStop('samoa', samoaShow.name, samoaShow.time, isBusy, usedVillages));
+    }
+  }
+
+  return stops.filter(Boolean);
+}
+
+/**
+ * Build a condensed route for late arrivals (4:30 PM+).
+ * Hits 2-3 priority villages fast and triggers the Free Within 3 reminder.
+ *
+ * @param {number} arrMin
+ * @param {string[]} priority
+ * @param {boolean} isBusy
+ * @param {number} lastShowCutoff
+ * @returns {Object[]}
+ */
+function buildLateRoute(arrMin, priority, isBusy, lastShowCutoff) {
+  const stops        = [];
+  const usedVillages = new Set();
+  let   curMin       = arrMin;
+  let   lastVillage  = null;
+
+  for (const village of priority.slice(0, 3)) {
+    if (usedVillages.has(village)) continue;
+    const show = getBestShow(village, curMin, [], lastShowCutoff);
+    if (!show) continue;
+    if (!isTransitionValid(lastVillage, village, false, false)) continue;
+
+    const stop = buildShowStop(village, show.name, show.time, isBusy, usedVillages);
+    if (!stop) continue;
+
+    stops.push(stop);
+    curMin       = stop.timeMin + TIMING.SHOW_DURATION_MIN + TIMING.WALK_BUFFER_MIN;
+    lastVillage  = village;
+  }
+
+  return stops;
+}
+
+// ─── Main Entry Point ─────────────────────────────────────────────────────────
+
+/**
+ * Build a complete day schedule for a guest.
+ *
+ * @param {Object} params
+ * @param {string} params.arrival - arrival time in "HH:MM" format
+ * @param {string} params.group - group type key
+ * @param {string[]} params.interests - interest keys
+ * @param {string[]} params.connection - cultural connection village names
+ * @param {string} params.ticket - ticket type key
+ * @param {boolean} params.isBusy - is today a busy day
+ * @returns {Object} { stops, isLate, needsUpgrade, islandsOnly }
+ */
+function buildSchedule({ arrival, group, interests, connection, ticket, isBusy }) {
+  const ticketData   = TICKETS[ticket];
+  const arrMin       = toMinutes(arrival);
+  const isLateArrival = arrMin >= toMinutes('16:30');
+
+  // If guest has dinner, cut off village shows at 4PM so they have time to get there
+  const lastShowCutoff = ticketData.hasDinner
+    ? toMinutes(TIMING.DINNER_CUTOFF)
+    : toMinutes('17:00');
+
+  const priority       = getPriorityVillages(group, interests, connection);
+  const preferredShows = getPreferredShows(interests);
+
+  // Build village stops
+  let stops = isLateArrival
+    ? buildLateRoute(arrMin, priority, isBusy, lastShowCutoff)
+    : buildSmartRoute(arrMin, priority, preferredShows, isBusy, lastShowCutoff);
+
+  // Filter out any stops before arrival and sort chronologically
+  stops = stops
+    .filter(stop => stop.timeMin >= arrMin)
+    .sort((a, b) => a.timeMin - b.timeMin);
+
+  // End-of-day south positioning:
+  // If last village is north (Hawaii/Tahiti) and canoe unused, ride back south
+  // so guests end up near the exit
+  const lastVillageStop  = [...stops].reverse().find(s => s.type === 'show');
+  const canoeAlreadyUsed = stops.some(s => s.type === 'canoe');
+  const northEndVillages = new Set(['hawaii', 'tahiti']);
+
+  if (lastVillageStop && !canoeAlreadyUsed && northEndVillages.has(lastVillageStop.village.toLowerCase())) {
+    const afterLastShow = lastVillageStop.timeMin + TIMING.SHOW_DURATION_MIN + TIMING.WALK_BUFFER_MIN;
+    const canoeMin      = getNextCanoeTime(afterLastShow, 'south');
+
+    if (canoeMin && canoeMin <= toMinutes('17:00')) {
+      stops.push(buildCanoeStop(canoeMin, 'south'));
+      stops.sort((a, b) => a.timeMin - b.timeMin);
+    }
+  }
+
+  // Add dinner stop
+  if (ticketData.hasDinner) {
+    stops.push({
+      time:    '4:30 PM',
+      timeMin: toMinutes('16:30'),
+      type:    'dinner',
+      village: 'Dining',
+      title:   ticketData.dinnerTitle,
+      desc:    ticketData.dinnerDesc,
+      flags:   [],
+    });
+  }
+
+  // Add food truck suggestion for islands-only guests with the evening show
+  if (!ticketData.hasDinner && ticketData.hasShow) {
+    stops.push({
+      time:    '5:00 PM',
+      timeMin: toMinutes('17:00'),
+      type:    'foodtruck',
+      village: 'On-Site Dining',
+      title:   'Food Trucks on Premises',
+      desc:    "Grab a bite while you wind down — food trucks are available on-site before the evening show.",
+      flags:   [],
+    });
+  }
+
+  // Add Hā: Breath of Life show
+  if (ticketData.hasShow) {
+    stops.push({
+      time:    '7:00 PM',
+      timeMin: toMinutes('19:00'),
+      type:    'ha_show',
+      village: 'Hā Theater',
+      title:   'Hā: Breath of Life',
+      desc:    'Seating opens at 7:00 PM — head to the theater for the grand finale of your day.',
+      flags:   ['dont_miss'],
+    });
+  }
+
+  return {
+    stops,
+    isLate:       isLateArrival,
+    needsUpgrade: ticket === 'islands',
+    islandsOnly:  !ticketData.hasDinner,
+    canoeUsed:    stops.some(s => s.type === 'canoe'),
+  };
+}
+/**
+ * planner.js — Step-by-Step Planner UI
+ *
+ * Manages the multi-step question flow that collects guest preferences
+ * and renders the personalized schedule result.
+ *
+ * Dependencies: data.js, routing.js
+ */
+
+'use strict';
+
+// ─── Question Flow Definition ─────────────────────────────────────────────────
+
+const QUESTIONS = [
+  {
+    id:      'group',
+    label:   'Your group',
+    title:   "Who's joining you today?",
+    sub:     "We'll tailor your day around your crew.",
+    type:    'single',
+    options: [
+      { value: 'family_kids',  icon: 'ti-users',   label: 'Family',  sub: 'With young kids' },
+      { value: 'family_teens', icon: 'ti-users',   label: 'Family',  sub: 'With teens'      },
+      { value: 'couple',       icon: 'ti-heart',   label: 'Couple',  sub: 'Just the two of us' },
+      { value: 'friends',      icon: 'ti-friends', label: 'Friends', sub: 'Group of adults' },
+      { value: 'solo',         icon: 'ti-user',    label: 'Solo',    sub: 'Just me'         },
+    ],
+  },
+  {
+    id:      'vibe',
+    label:   'Your style',
+    title:   'How do you like to experience a new culture?',
+    sub:     'Pick everything that sounds like you.',
+    type:    'multi',
+    options: [
+      { value: 'watch_performances', icon: 'ti-music',          label: 'Watch performances',  sub: 'Sit back and enjoy' },
+      { value: 'hands_on',           icon: 'ti-hand-click',     label: 'Get hands-on',        sub: 'Try it yourself'    },
+      { value: 'learn_history',      icon: 'ti-book',           label: 'Learn the stories',   sub: 'History & meaning'  },
+      { value: 'food',               icon: 'ti-tools-kitchen-2',label: 'Eat everything',      sub: 'Food first'         },
+    ],
+  },
+  {
+    id:      'connection',
+    label:   'Your roots',
+    title:   'Any personal connection to these cultures?',
+    sub:     "We'll make sure you don't miss your heritage.",
+    type:    'multi',
+    options: [
+      { value: 'samoa',    icon: 'ti-wave-sine', label: 'Samoa',    sub: '' },
+      { value: 'hawaii',   icon: 'ti-flower',    label: "Hawai'i",  sub: '' },
+      { value: 'tonga',    icon: 'ti-crown',     label: 'Tonga',    sub: '' },
+      { value: 'fiji',     icon: 'ti-flame',     label: 'Fiji',     sub: '' },
+      { value: 'tahiti',   icon: 'ti-ripple',    label: 'Tahiti',   sub: '' },
+      { value: 'aotearoa', icon: 'ti-leaf',      label: 'Aotearoa', sub: '' },
+      { value: 'none',     icon: 'ti-world',     label: 'No connection', sub: 'All new to me' },
+    ],
+  },
+  {
+    id:      'arrival',
+    label:   'Your arrival',
+    title:   'What time are you arriving?',
+    sub:     "We'll catch you the best shows at the right times.",
+    type:    'select',
+    options: [
+      '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+      '3:00 PM',  '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM',
+    ],
+  },
+  {
+    id:    'ticket',
+    label: 'Your ticket',
+    title: 'What ticket do you have?',
+    sub:   "This tells us what's included in your day.",
+    type:  'ticket',
+  },
+];
+
+// Maps display times back to HH:MM for the routing engine
+const ARRIVAL_TIME_MAP = {
+  '12:30 PM': '12:30', '1:00 PM': '13:00', '1:30 PM': '13:30',
+  '2:00 PM':  '14:00', '2:30 PM': '14:30', '3:00 PM': '15:00',
+  '3:30 PM':  '15:30', '4:00 PM': '16:00', '4:30 PM': '16:30',
+  '5:00 PM':  '17:00',
+};
+
+// ─── Planner State ────────────────────────────────────────────────────────────
+
+const plannerState = {
+  currentStep: 0,
+  answers:     {},
+};
+
+// ─── DOM References ───────────────────────────────────────────────────────────
+// Cached once on init to avoid repeated querySelector calls
+
+let questionArea = null;
+let progressFill = null;
+
+// ─── Initialization ───────────────────────────────────────────────────────────
+
+/**
+ * Initialize the planner. Call once on page load.
+ */
+function initPlanner() {
+  questionArea = document.getElementById('questionArea');
+  progressFill = document.getElementById('progressFill');
+  renderQuestion();
+}
+
+// ─── Progress Bar ─────────────────────────────────────────────────────────────
+
+/**
+ * Update the progress bar to reflect the current step.
+ * @param {number} percent - 0 to 100
+ */
+function setProgress(percent) {
+  if (progressFill) progressFill.style.width = `${percent}%`;
+}
+
+// ─── Question Rendering ───────────────────────────────────────────────────────
+
+/**
+ * Render the current question step into the question area.
+ */
+function renderQuestion() {
+  const question = QUESTIONS[plannerState.currentStep];
+  const progress = Math.round((plannerState.currentStep / QUESTIONS.length) * 100);
+  setProgress(progress);
+
+  const isLastStep = plannerState.currentStep === QUESTIONS.length - 1;
+  const canProceed = isStepComplete(question);
+
+  let html = `
+    <div class="q-label">${question.label}</div>
+    <div class="q-title">${question.title}</div>
+    <div class="q-sub">${question.sub}</div>
+  `;
+
+  html += renderQuestionInput(question);
+  html += renderNavigation(isLastStep, canProceed);
+
+  questionArea.innerHTML = html;
+}
+
+/**
+ * Render the appropriate input for a question type.
+ * @param {Object} question
+ * @returns {string} HTML string
+ */
+function renderQuestionInput(question) {
+  switch (question.type) {
+    case 'single':
+    case 'multi':
+      return renderOptionGrid(question);
+    case 'select':
+      return renderSelectInput(question);
+    case 'ticket':
+      return renderTicketOptions();
+    default:
+      return '';
+  }
+}
+
+/**
+ * Render a grid of selectable option buttons.
+ * @param {Object} question
+ * @returns {string} HTML string
+ */
+function renderOptionGrid(question) {
+  const selectedValues = question.type === 'multi'
+    ? (plannerState.answers[question.id] || [])
+    : [plannerState.answers[question.id]];
+
+  const buttons = question.options.map(option => {
+    const isSelected = selectedValues.includes(option.value);
+    return `
+      <button
+        class="opt-btn ${isSelected ? 'selected' : ''}"
+        onclick="handleOptionSelect('${question.id}', '${option.value}', '${question.type}')"
+      >
+        <i class="ti ${option.icon} opt-icon" aria-hidden="true"></i>
+        <span class="opt-label">${option.label}</span>
+        ${option.sub ? `<span class="opt-sub">${option.sub}</span>` : ''}
+      </button>
+    `;
+  }).join('');
+
+  return `<div class="option-grid">${buttons}</div>`;
+}
+
+/**
+ * Render a dropdown select input.
+ * @param {Object} question
+ * @returns {string} HTML string
+ */
+function renderSelectInput(question) {
+  const selected = plannerState.answers[question.id] || question.options[0];
+
+  // Set default if not already set
+  if (!plannerState.answers[question.id]) {
+    plannerState.answers[question.id] = question.options[0];
+  }
+
+  const options = question.options.map(opt =>
+    `<option value="${opt}" ${selected === opt ? 'selected' : ''}>${opt}</option>`
+  ).join('');
+
+  return `
+    <select
+      id="selectVal"
+      onchange="plannerState.answers['${question.id}'] = this.value"
+    >
+      ${options}
+    </select>
+  `;
+}
+
+/**
+ * Render the ticket selection cards.
+ * @returns {string} HTML string
+ */
+function renderTicketOptions() {
+  return Object.values(TICKETS).map(ticket => {
+    const isSelected = plannerState.answers.ticket === ticket.id;
+
+    let badgeHtml = '';
+    if (ticket.badge === 'popular') badgeHtml = `<span class="pkg-badge badge-popular">Most popular</span><br>`;
+    if (ticket.badge === 'show')    badgeHtml = `<span class="pkg-badge badge-show">Includes Hā Show</span><br>`;
+    if (ticket.badge === 'self')    badgeHtml = `<span class="pkg-badge badge-self">Self-guided</span><br>`;
+
+    const dividerHtml = ticket.divider
+      ? `<div class="pkg-divider"><span>Declined guided tour</span></div>`
+      : '';
+
+    return `
+      ${dividerHtml}
+      <div class="pkg-card ${isSelected ? 'selected' : ''}" onclick="handleTicketSelect('${ticket.id}')">
+        ${badgeHtml}
+        <div class="pkg-name">${ticket.name}</div>
+        <div class="pkg-desc">${ticket.desc}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+/**
+ * Render the back/next navigation buttons.
+ * @param {boolean} isLastStep
+ * @param {boolean} canProceed
+ * @returns {string} HTML string
+ */
+function renderNavigation(isLastStep, canProceed) {
+  const backBtn = plannerState.currentStep > 0
+    ? `<button class="back-btn" onclick="plannerBack()"><i class="ti ti-arrow-left"></i></button>`
+    : '';
+
+  const nextAction = isLastStep ? 'buildPlannerSchedule()' : 'plannerNext()';
+  const nextLabel  = isLastStep ? 'Build my schedule' : 'Next';
+
+  return `
+    <div class="nav-row">
+      ${backBtn}
+      <button
+        class="main-btn"
+        id="nextBtn"
+        onclick="${nextAction}"
+        ${canProceed ? '' : 'disabled'}
+      >
+        ${nextLabel}
+      </button>
+    </div>
+  `;
+}
+
+// ─── Input Handlers ───────────────────────────────────────────────────────────
+
+/**
+ * Handle selection of a single or multi-select option.
+ * Auto-advances on single-select after a short delay.
+ *
+ * @param {string} questionId
+ * @param {string} value
+ * @param {'single'|'multi'} type
+ */
+function handleOptionSelect(questionId, value, type) {
+  if (type === 'single') {
+    plannerState.answers[questionId] = value;
+  } else {
+    // Multi-select: 'none' clears all others; others clear 'none'
+    const current = plannerState.answers[questionId] || [];
+
+    if (value === 'none') {
+      plannerState.answers[questionId] = ['none'];
+    } else {
+      const withoutNone = current.filter(v => v !== 'none');
+      plannerState.answers[questionId] = withoutNone.includes(value)
+        ? withoutNone.filter(v => v !== value)
+        : [...withoutNone, value];
+    }
+  }
+
+  renderQuestion();
+
+  // Auto-advance single-select after selection animation
+  if (type === 'single') {
+    setTimeout(() => {
+      if (isStepComplete(QUESTIONS[plannerState.currentStep])) plannerNext();
+    }, 280);
+  }
+}
+
+/**
+ * Handle ticket card selection.
+ * @param {string} ticketId
+ */
+function handleTicketSelect(ticketId) {
+  plannerState.answers.ticket = ticketId;
+  renderQuestion();
+}
+
+// ─── Navigation ───────────────────────────────────────────────────────────────
+
+/**
+ * Check whether the current step has a valid answer.
+ * @param {Object} question
+ * @returns {boolean}
+ */
+function isStepComplete(question) {
+  switch (question.type) {
+    case 'single': return !!plannerState.answers[question.id];
+    case 'multi':  return (plannerState.answers[question.id] || []).length > 0;
+    case 'select': return !!plannerState.answers[question.id];
+    case 'ticket': return !!plannerState.answers.ticket;
+    default:       return true;
+  }
+}
+
+/** Advance to the next question step. */
+function plannerNext() {
+  if (plannerState.currentStep < QUESTIONS.length - 1) {
+    plannerState.currentStep++;
+    renderQuestion();
+  }
+}
+
+/** Go back to the previous question step. */
+function plannerBack() {
+  if (plannerState.currentStep > 0) {
+    plannerState.currentStep--;
+    renderQuestion();
+  }
+}
+
+/** Reset the planner to the beginning. */
+function restartPlanner() {
+  plannerState.currentStep = 0;
+  plannerState.answers     = {};
+  setProgress(0);
+  renderQuestion();
+}
+
+// ─── Schedule Building ────────────────────────────────────────────────────────
+
+/**
+ * Collect answers, build the route, fetch a personalized greeting,
+ * and render the result.
+ */
+async function buildPlannerSchedule() {
+  setProgress(100);
+
+  const { group, vibe = [], connection = [], arrival, ticket } = plannerState.answers;
+  const today   = new Date();
+  const isBusy  = BUSY_DAYS.has(today.getDay());
+  const isLate  = ARRIVAL_TIME_MAP[arrival] >= '16:30';
+
+  // Show loading state immediately
+  questionArea.innerHTML = `
+    <div class="loading">
+      <div class="loading-name">Building your personalized day...</div>
+      <div style="color:#aaa;font-size:13px;margin-top:4px;">Mapping your route through the center</div>
+      <div class="loading-dots">
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+        <div class="loading-dot"></div>
+      </div>
+    </div>
+  `;
+
+  // Build route synchronously (fast — no API needed for structure)
+  const route = buildSchedule({
+    arrival:    ARRIVAL_TIME_MAP[arrival] || '13:00',
+    group,
+    interests:  vibe,
+    connection,
+    ticket,
+    isBusy,
+  });
+
+  // Fetch a personalized greeting from the API (small prompt = fast)
+  const greeting = await fetchGreeting(group, vibe, connection);
+
+  renderScheduleResult(route, greeting, isBusy, isLate, ticket);
+}
+
+/**
+ * Fetch a short personalized greeting from the Claude API.
+ * Falls back gracefully if the request fails.
+ *
+ * @param {string} group
+ * @param {string[]} interests
+ * @param {string[]} connection
+ * @returns {Promise<string>}
+ */
+async function fetchGreeting(group, interests, connection) {
+  const GROUP_LABELS = {
+    family_kids:  'family with young kids',
+    family_teens: 'family with teenagers',
+    couple:       'couple',
+    friends:      'group of friends',
+    solo:         'solo traveler',
+  };
+
+  const connectionStr = (connection || [])
+    .filter(c => c !== 'none')
+    .join(' and ');
+
+  const prompt = [
+    `Write a single warm greeting sentence (max 30 words) for a ${GROUP_LABELS[group] || 'guest'}`,
+    interests.length  ? `interested in ${interests.join(', ')}` : '',
+    connectionStr     ? `with a personal connection to ${connectionStr}` : '',
+    `at the Polynesian Cultural Center. Sound like a friendly local, not a robot.`,
+  ].filter(Boolean).join(' ');
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        model:      'claude-sonnet-4-20250514',
+        max_tokens: 80,
+        messages:   [{ role: 'user', content: prompt }],
+      }),
+    });
+
+    const data = await response.json();
+    return data?.content?.[0]?.text?.trim() || getDefaultGreeting();
+  } catch {
+    return getDefaultGreeting();
+  }
+}
+
+/** Fallback greeting if the API call fails. */
+function getDefaultGreeting() {
+  return "Aloha! Here's your personalized day at the Polynesian Cultural Center — we've mapped out the best route for you.";
+}
+
+// ─── Result Rendering ─────────────────────────────────────────────────────────
+
+/** Map flag keys to display label and CSS class. */
+const FLAG_DISPLAY = {
+  busy_early:   { css: 'flag-busy',    label: '🔥 Arrive 10-15 mins early' },
+  early:        { css: 'flag-early',   label: '⏰ Arrive a few mins early'  },
+  gem:          { css: 'flag-gem',     label: '💎 Hidden gem'               },
+  preshow:      { css: 'flag-preshow', label: '🎭 Pre-show 10 mins before'  },
+  transport:    { css: 'flag-transport',label: '🛶 Canoe transport'          },
+  dont_miss:    { css: 'flag-dont_miss',label: "⭐ Don't miss"               },
+  indoor_small: { css: 'flag-busy',    label: '🏠 Small indoor venue'        },
+};
+
+/**
+ * Render flag chips for a schedule stop.
+ * @param {string[]} flags
+ * @returns {string} HTML string
+ */
+function renderFlags(flags) {
+  if (!flags?.length) return '';
+  const chips = flags
+    .map(f => FLAG_DISPLAY[f])
+    .filter(Boolean)
+    .map(f => `<span class="sched-flag ${f.css}">${f.label}</span>`)
+    .join('');
+  return chips ? `<div class="sched-flags">${chips}</div>` : '';
+}
+
+/**
+ * Render a single schedule stop row.
+ * @param {Object} stop
+ * @returns {string} HTML string
+ */
+function renderStop(stop) {
+  return `
+    <div class="sched-item ${stop.highlight ? 'highlight' : ''}">
+      <div class="sched-time">${stop.time}</div>
+      <div class="sched-body">
+        <div class="sched-village">${stop.village}</div>
+        <div class="sched-title">${stop.title}</div>
+        ${stop.desc ? `<div class="sched-desc">${stop.desc}</div>` : ''}
+        ${renderFlags(stop.flags)}
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Render the complete schedule result view.
+ *
+ * @param {Object} route - output from buildSchedule()
+ * @param {string} greeting
+ * @param {boolean} isBusy
+ * @param {boolean} isLate
+ * @param {string} ticket
+ */
+function renderScheduleResult(route, greeting, isBusy, isLate, ticket) {
+  const scheduleItems = route.stops.map(renderStop).join('');
+
+  const canoeStop     = route.stops.find(s => s.type === 'canoe');
+  const routeLabel    = canoeStop ? 'Walk south → Canoe north route' : 'Walking route through the center';
+
+  const busyBanner = isBusy ? `
+    <div class="route-badge" style="background:#FEF3E2;border-color:#F5DFA0">
+      <i class="ti ti-alert-triangle route-badge-icon" style="color:#9A5B00"></i>
+      <span class="route-badge-text" style="color:#9A5B00">Busy day — extra buffer time built into popular shows</span>
+    </div>
+  ` : '';
+
+  const routeBadge = `
+    <div class="route-badge">
+      <i class="ti ti-route route-badge-icon"></i>
+      <span class="route-badge-text">${routeLabel}</span>
+    </div>
+  `;
+
+  const upgradeCard = route.needsUpgrade ? `
+    <div class="upgrade-card">
+      <div class="upgrade-label">Make your night unforgettable</div>
+      <div class="upgrade-title">Add dinner + the Hā Show</div>
+      <div class="upgrade-desc">Your ticket covers the villages — but the evening really comes alive with dinner and Hā: Breath of Life. Most guests say it's the highlight of their trip.</div>
+      <button class="upgrade-btn" onclick="window.open('https://packages.polynesia.com', '_blank')">View upgrade options →</button>
+    </div>
+  ` : '';
+
+  const free3Card = isLate ? `
+    <div class="info-card free3">
+      <div class="info-card-title">💡 Free Within 3 Days</div>
+      <div class="info-card-desc">Arriving late? Your ticket lets you return to PCC within the next 3 days at no charge — so don't stress about seeing everything today.</div>
+    </div>
+  ` : '';
+
+  questionArea.innerHTML = `
+    <div class="result-greeting">${greeting}</div>
+    ${busyBanner}
+    ${routeBadge}
+    <div class="sched-section-label">Your personalized schedule</div>
+    <div class="sched-card">${scheduleItems}</div>
+    ${upgradeCard}
+    ${free3Card}
+    <button class="restart-btn" onclick="restartPlanner()">
+      <i class="ti ti-refresh"></i> Plan a new day
+    </button>
+  `;
+}
+/**
+ * chat.js — PCC Guide Chatbot
+ *
+ * A floating chat drawer powered by Claude that acts as a personal
+ * Tour Ambassador for self-guided guests. Knows the full PCC schedule,
+ * crowd logic, routing rules, and operational details.
+ *
+ * Dependencies: data.js
+ */
+
+'use strict';
+
+// ─── Chat State ───────────────────────────────────────────────────────────────
+
+const chatState = {
+  isOpen:       false,
+  isInitialized: false,
+  history:      [],  // full conversation history sent to API
+  isBusy:       false,
+  dayName:      '',
+};
+
+// ─── DOM References ───────────────────────────────────────────────────────────
+
+let chatDrawer      = null;
+let chatArea        = null;
+let quickRepliesEl  = null;
+let userInput       = null;
+let sendBtn         = null;
+let fabIcon         = null;
+let overlay         = null;
+
+// ─── Initialization ───────────────────────────────────────────────────────────
+
+/**
+ * Initialize the chat module. Call once on page load.
+ */
+function initChat() {
+  chatDrawer     = document.getElementById('chatDrawer');
+  chatArea       = document.getElementById('chatArea');
+  quickRepliesEl = document.getElementById('quickReplies');
+  userInput      = document.getElementById('userInput');
+  sendBtn        = document.getElementById('sendBtn');
+  fabIcon        = document.getElementById('fabIcon');
+  overlay        = document.getElementById('overlay');
+
+  const today       = new Date();
+  chatState.isBusy  = BUSY_DAYS.has(today.getDay());
+  chatState.dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today.getDay()];
+}
+
+// ─── Drawer Controls ──────────────────────────────────────────────────────────
+
+/** Toggle the chat drawer open or closed. */
+function toggleDrawer() {
+  chatState.isOpen ? closeDrawer() : openDrawer();
+}
+
+/** Open the chat drawer and start the conversation if first open. */
+function openDrawer() {
+  chatState.isOpen = true;
+  chatDrawer.classList.add('open');
+  overlay.classList.add('show');
+  fabIcon.className = 'ti ti-x';
+
+  if (!chatState.isInitialized) {
+    chatState.isInitialized = true;
+    startConversation();
+  }
+
+  // Scroll to bottom after transition
+  setTimeout(() => { chatArea.scrollTop = chatArea.scrollHeight; }, 400);
+}
+
+/** Close the chat drawer. */
+function closeDrawer() {
+  chatState.isOpen = false;
+  chatDrawer.classList.remove('open');
+  overlay.classList.remove('show');
+  fabIcon.className = 'ti ti-message-circle';
+}
+
+// ─── System Prompt ────────────────────────────────────────────────────────────
+
+/**
+ * Build the system prompt that defines the chatbot's knowledge and behavior.
+ * @returns {string}
+ */
+function buildSystemPrompt() {
+  const busyContext = chatState.isBusy
+    ? `TODAY IS A BUSY DAY (${chatState.dayName}). Remind guests to arrive 7-10 minutes early for popular shows.`
+    : `Today is ${chatState.dayName}. Normal crowd levels — standard arrival times apply.`;
+
+  return `You are a warm, knowledgeable PCC Tour Guide AI built into the Polynesian Cultural Center app. You replace the personal Tour Ambassador for self-guided guests. Your job is to give them the same quality day a guided guest would have.
+
+Talk like a friendly local who genuinely loves the center — conversational, never robotic. Keep messages short. Ask one question at a time to get to know the guest before building their schedule.
+
+${busyContext}
+
+━━━ PHYSICAL LAYOUT ━━━
+Villages numbered by official PCC map (south to north):
+1. Samoa — south end, near entrance and Huki stage
+2. Aotearoa — middle east
+3. Fiji — middle, same side as Hawaii
+4. Hawaii — north east
+5. Tahiti — FARTHEST village, north west
+6. Tonga — south, near entrance (just across the bridge from Samoa)
+
+Canoe: one-way ferry on the lagoon
+- Hema (south landing): boards 1:30 PM, goes north
+- Akau (north landing): boards 2:00 PM, goes south
+- Both close at 5:00 PM. Used ONCE per day.
+- Canoe is a transport strategy, not just an activity.
+
+Key routing principle: either walk south → canoe north, OR canoe south → walk back.
+Always try to end the day near the south (Samoa/Tonga) for easy exit.
+
+━━━ DAILY SCHEDULE ━━━
+
+SAMOA: Tree of Life (12:30, 2, 3, 4:30) | Traditional Cooking (1:30, 2:30) | Food Tasting (3:30) | Tree of Life & Fire Knife (3:30, 4PM)
+⚠️ ALL SAMOA SHOWS: pre-show starts 10 mins before — always arrive early
+🔥 4PM SAMOA = most watched show of the day. Arrive 10+ mins early (15+ on busy days)
+
+AOTEAROA: Te Whare Tapere (12:30, 5PM) | Toi Whakaari Māori (2, 3, 4PM) | Mau Rākau/Weaponry (2:30, 3:30)
+
+FIJI: Derua Instrument Activity (12:30, 5PM) | Canoe & Navigation (1:30, 4:30) | Migration through Chants & Dance (2, 3, 4PM — popular) | Derua Presentation (2:30, 3:30 — 💎 hidden gem, worth finding)
+
+HAWAII: Kūpa'a Hawai'i: Stories of Aloha (1:30, 2:30, 3:30, 4:30, 5PM)
+
+TAHITI: Rhythms of the Islands (12:30, 1:30, 4:30) | Tahiti Dance (2, 3PM) | Tahitian Wedding Ceremony (2:30, 3:30 — small indoor, arrive early) | Intro to French Polynesia (2:30)
+
+TONGA: Cultural Core Values (12:30) | Cultural Core Values & the Nafa (2, 3, 4, 4:30 — popular, large outdoor)
+
+HUKI — A Canoe Celebration: 1:00–1:20 PM (weather permitting). Once daily. First-timers always regret missing it. Previously 12:40 PM — moved to 1PM so more guests can catch it.
+
+Canoe rides: 1:30, 2:30, 3:30, 4:30 PM (15 mins)
+
+━━━ DINING ━━━
+Ali'i Lu'au: venue opens 4:30 PM, show starts 5:00 PM
+Gateway Buffet: open 4:30–6:30 PM
+Hā: Breath of Life: seating opens 7:00 PM
+
+━━━ TICKETS ━━━
+- Islands of Polynesia: villages only, no dinner, no show
+- Islands + Hā Show: villages + evening show
+- Gateway Buffet: villages + buffet dinner 4:30PM + Hā Silver
+- Self-Guided Ali'i Lū'au: declined tour, Ali'i Lu'au 4:30/5PM + Hā Gold
+If islands-only, suggest an upgrade naturally. If dinner included, last village show should be by 4PM.
+
+━━━ GROUP INTELLIGENCE ━━━
+Family + young kids → Samoa and Hawaii first (most interactive, fire knife, hula, lei)
+Teens → Samoa + Aotearoa (Mau Rākau weaponry) + Fiji
+Couples → Tahiti (wedding ceremony, ori dance) + Aotearoa (artistic)
+Friends → hidden gems (Fiji Derua, Tahiti dance), Samoa fire knife
+Solo → can move fast, suggest Mission Settlement (History of Polynesian Migration)
+Cultural connection → make that village a HIGHLIGHT, not just a stop
+
+━━━ LATE ARRIVALS ━━━
+4:30 PM or later → mention the FREE WITHIN 3 policy: guests can return within 3 days at no charge. Most guests don't know this.
+
+━━━ YOUR BEHAVIOR ━━━
+1. Warm greeting, ask 1-2 questions at a time
+2. Naturally gather: group type, interests, cultural connections, arrival time, ticket
+3. Once you have enough, build their schedule
+4. Explain WHY each stop fits THIS specific guest — sound like a guide who knows them
+5. Flag crowd warnings, hidden gems, pre-show reminders naturally in conversation
+6. Never list all villages at once — be conversational
+
+━━━ SCHEDULE OUTPUT ━━━
+When ready, output EXACTLY this JSON block (no markdown, no extra text around it):
+SCHEDULE_JSON_START
+{"greeting":"One warm sentence","items":[{"time":"1:00 PM","village":"All Villages","title":"Huki — A Canoe Celebration","tip":"Once daily — don't miss it!","flags":["dont_miss"]}],"upgrade":{"show":false,"title":"","reason":"","cta":""},"free3":false}
+SCHEDULE_JSON_END
+
+Flag values: "busy_early" | "early" | "gem" | "preshow" | "dont_miss" | "transport" | "indoor_small"`;
+}
+
+// ─── Conversation Start ───────────────────────────────────────────────────────
+
+/**
+ * Send the opening message to start the conversation.
+ */
+function startConversation() {
+  const opening = chatState.isBusy
+    ? `Aloha! 🌺 It's a busy ${chatState.dayName} today — I'll help you beat the crowds. Who's with you?`
+    : `Aloha! 🌺 Welcome to PCC! I'm here to help you plan the perfect day. Who's with you today?`;
+
+  appendMessage('assistant', opening);
+  chatState.history.push({ role: 'assistant', content: opening });
+  setQuickReplies(['Just me', "My family", "Couple's trip", 'Group of friends']);
+}
+
+// ─── Message Handling ─────────────────────────────────────────────────────────
+
+/**
+ * Send a message from the user.
+ * Reads from the userInput textarea.
+ */
+async function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text) return;
+
+  // Clear input and quick replies
+  userInput.value    = '';
+  userInput.style.height = 'auto';
+  setQuickReplies([]);
+
+  // Render user message and update history
+  appendMessage('user', text);
+  chatState.history.push({ role: 'user', content: text });
+
+  // Disable send while processing
+  sendBtn.disabled = true;
+  showTypingIndicator();
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        model:      'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        system:     buildSystemPrompt(),
+        messages:   chatState.history,
+      }),
+    });
+
+    const data  = await response.json();
+    const reply = data?.content?.map(c => c.text || '').join('') || '';
+
+    removeTypingIndicator();
+    appendMessage('assistant', reply);
+    chatState.history.push({ role: 'assistant', content: reply });
+
+    updateQuickReplies(reply);
+
+  } catch {
+    removeTypingIndicator();
+    appendMessage('assistant', "Sorry, I had trouble connecting. Please try again!");
+  }
+
+  sendBtn.disabled = false;
+}
+
+/**
+ * Send a quick reply as if the user typed it.
+ * @param {string} text
+ */
+function sendQuickReply(text) {
+  userInput.value = text;
+  sendMessage();
+}
+
+// ─── Quick Replies ────────────────────────────────────────────────────────────
+
+/**
+ * Render quick reply buttons.
+ * @param {string[]} replies
+ */
+function setQuickReplies(replies) {
+  quickRepliesEl.innerHTML = replies
+    .map(r => `<button class="qr-btn" onclick="sendQuickReply('${r}')">${r}</button>`)
+    .join('');
+}
+
+/**
+ * Update quick replies contextually based on what the AI just said.
+ * @param {string} reply
+ */
+function updateQuickReplies(reply) {
+  const lower = reply.toLowerCase();
+
+  if (reply.includes('SCHEDULE_JSON_START')) {
+    setQuickReplies(['Tell me more about Samoa', 'Any hidden gems?', 'What after dinner?']);
+    return;
+  }
+
+  if (lower.includes('ticket') || lower.includes('package')) {
+    setQuickReplies(["Islands of Polynesia", "Islands + Hā Show", "Gateway Buffet", "Self-Guided Ali'i Lū'au"]);
+  } else if (lower.includes('arriv') || lower.includes('time')) {
+    setQuickReplies(['12:30 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM']);
+  } else if (lower.includes('interest') || lower.includes('excited') || lower.includes('enjoy')) {
+    setQuickReplies(['Performances', 'Hands-on activities', 'Food', 'Learning history']);
+  }
+}
+
+// ─── Message Rendering ────────────────────────────────────────────────────────
+
+/**
+ * Append a message bubble to the chat area.
+ * Parses schedule JSON if present and renders it as a card.
+ *
+ * @param {'user'|'assistant'} role
+ * @param {string} content
+ */
+function appendMessage(role, content) {
+  const jsonMatch    = content.match(/SCHEDULE_JSON_START([\s\S]*?)SCHEDULE_JSON_END/);
+  const displayText  = content.replace(/SCHEDULE_JSON_START[\s\S]*?SCHEDULE_JSON_END/g, '').trim();
+
+  const messageEl = document.createElement('div');
+  messageEl.className = `msg ${role === 'user' ? 'user' : 'ai'}`;
+
+  if (role === 'assistant') {
+    messageEl.innerHTML = `
+      <div class="msg-avatar"><i class="ti ti-map-pin"></i></div>
+      <div>
+        ${displayText ? `<div class="msg-bubble">${formatMessageText(displayText)}</div>` : ''}
+        ${jsonMatch ? renderScheduleCard(jsonMatch[1].trim()) : ''}
+      </div>
+    `;
+  } else {
+    messageEl.innerHTML = `<div class="msg-bubble">${escapeHtml(content)}</div>`;
+  }
+
+  chatArea.appendChild(messageEl);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/**
+ * Format message text: convert markdown bold and newlines to HTML.
+ * @param {string} text
+ * @returns {string}
+ */
+function formatMessageText(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+/**
+ * Escape HTML special characters.
+ * @param {string} text
+ * @returns {string}
+ */
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ─── Schedule Card ────────────────────────────────────────────────────────────
+
+/** Flag display config for the chat schedule card. */
+const CHAT_FLAG_DISPLAY = {
+  busy_early:   { css: 'flag-busy',     label: '🔥 Arrive 10-15 mins early' },
+  early:        { css: 'flag-early',    label: '⏰ Arrive a few mins early'  },
+  gem:          { css: 'flag-gem',      label: '💎 Hidden gem'               },
+  preshow:      { css: 'flag-preshow',  label: '🎭 Pre-show 10 mins before'  },
+  transport:    { css: 'flag-transport',label: '🛶 Canoe transport'           },
+  dont_miss:    { css: 'flag-dont_miss',label: "⭐ Don't miss"               },
+  indoor_small: { css: 'flag-busy',     label: '🏠 Small indoor venue'        },
+};
+
+/**
+ * Parse schedule JSON and render it as a compact card.
+ * @param {string} jsonStr
+ * @returns {string} HTML string
+ */
+function renderScheduleCard(jsonStr) {
+  let data;
+  try {
+    data = JSON.parse(jsonStr);
+  } catch {
+    return '';
+  }
+
+  const items = (data.items || []).map(item => {
+    const flags = (item.flags || [])
+      .map(f => {
+        const display = CHAT_FLAG_DISPLAY[f];
+        return display
+          ? `<span class="sched-flag ${display.css}" style="font-size:9px;padding:1px 5px">${display.label}</span>`
+          : '';
+      })
+      .join('');
+
+    return `
+      <div class="mini-sched-item">
+        <div class="mini-time">${item.time}</div>
+        <div class="mini-body">
+          <div class="mini-village">${item.village}</div>
+          <div class="mini-title">${item.title}</div>
+          ${item.tip ? `<div class="mini-tip">${item.tip}</div>` : ''}
+          ${flags ? `<div style="margin-top:3px">${flags}</div>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  let extras = '';
+
+  if (data.upgrade?.show) {
+    extras += `
+      <div style="background:#FAEEDA;padding:8px 12px;font-size:11px;color:#854F0B;border-top:0.5px solid #EF9F27">
+        <strong>${data.upgrade.title}</strong><br>
+        ${data.upgrade.reason}<br>
+        <button
+          onclick="window.open('https://packages.polynesia.com', '_blank')"
+          style="margin-top:5px;background:#BA7517;border:none;border-radius:5px;color:white;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit"
+        >${data.upgrade.cta} →</button>
+      </div>
+    `;
+  }
+
+  if (data.free3) {
+    extras += `
+      <div style="background:#E1F5EE;padding:8px 12px;font-size:11px;color:#0F6E56;border-top:0.5px solid #9FD9C5">
+        <strong>💡 Free Within 3 Days</strong> — you can return within 3 days at no charge.
+      </div>
+    `;
+  }
+
+  return `
+    <div class="mini-sched-card">
+      <div class="mini-sched-header">${data.greeting || 'Your Personalized Schedule'}</div>
+      ${items}
+      ${extras}
+    </div>
+  `;
+}
+
+// ─── Typing Indicator ─────────────────────────────────────────────────────────
+
+/** Show the animated typing indicator. */
+function showTypingIndicator() {
+  const el = document.createElement('div');
+  el.className = 'msg ai';
+  el.id        = 'typingIndicator';
+  el.innerHTML = `
+    <div class="msg-avatar"><i class="ti ti-map-pin"></i></div>
+    <div class="typing">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+    </div>
+  `;
+  chatArea.appendChild(el);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/** Remove the typing indicator. */
+function removeTypingIndicator() {
+  document.getElementById('typingIndicator')?.remove();
+}
+
+// ─── Input Helpers ────────────────────────────────────────────────────────────
+
+/**
+ * Handle Enter key to send, Shift+Enter for new line.
+ * @param {KeyboardEvent} event
+ */
+function handleChatKey(event) {
+  if (event.key === 'Enter' && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+}
+
+/**
+ * Auto-resize the textarea as the user types.
+ * @param {HTMLTextAreaElement} el
+ */
+function autoResizeInput(el) {
+  el.style.height = 'auto';
+  el.style.height = `${Math.min(el.scrollHeight, 70)}px`;
+}
+/**
+ * app.js — Application Entry Point
+ *
+ * Initializes the PCC Planner application once the DOM is ready.
+ * All modules (data, routing, planner, chat) are loaded via index.html
+ * in the correct dependency order before this file runs.
+ */
+
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+  initPlanner();
+  initChat();
+});
+  </script>
+</body>
+</html>
