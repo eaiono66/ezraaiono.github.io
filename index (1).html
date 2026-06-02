@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ezra Aiono — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #07080f;
+  --bg2: #0c0e1a;
+  --border: rgba(255,255,255,0.07);
+  --text: #e2e4ef;
+  --muted: #5a5e75;
+  --accent: #e8a87c;
+  --accent2: #7eb8d4;
+  --accent3: #a89fd8;
+  --white: #f0f2ff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  overflow-x: hidden;
+}
+
+/* noise overlay */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:999;
+  opacity:.4;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  background: rgba(7,8,15,0.8);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--white);
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; gap: 32px; }
+.nav-link {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+.nav-link:hover { color: var(--white); }
+.nav-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 48px 64px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 30%, rgba(232,168,124,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 70%, rgba(126,184,212,0.05) 0%, transparent 70%);
+}
+
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+}
+
+.hero-number {
+  position: absolute;
+  top: 140px;
+  right: 48px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 220px;
+  color: rgba(255,255,255,0.025);
+  line-height: 1;
+  letter-spacing: -4px;
+  user-select: none;
+}
+
+.hero-tag {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp .6s ease .2s forwards;
+}
+
+.hero-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(72px, 10vw, 140px);
+  line-height: .95;
+  letter-spacing: 2px;
+  color: var(--white);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp .6s ease .4s forwards;
+}
+.hero-name .line2 { color: var(--accent); }
+
+.hero-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 480px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp .6s ease .6s forwards;
+}
+.hero-tagline strong { color: var(--text); font-weight: 400; }
+
+.hero-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 48px;
+  opacity: 0;
+  animation: fadeUp .6s ease .8s forwards;
+}
+.skill {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 5px 14px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  transition: all .2s;
+}
+.skill:hover { color: var(--accent); border-color: rgba(232,168,124,0.3); }
+
+.hero-cta {
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  animation: fadeUp .6s ease 1s forwards;
+}
+.btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 14px 28px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all .2s;
+  display: inline-block;
+}
+.btn-primary { background: var(--accent); color: #07080f; border: none; }
+.btn-primary:hover { background: var(--white); }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.2); }
+
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  right: 48px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  opacity: 0;
+  animation: fadeUp .6s ease 1.2s forwards;
+}
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: var(--muted);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse { 0%,100%{width:40px} 50%{width:20px} }
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(20px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* ── SECTION BASE ── */
+section { padding: 100px 48px; border-top: 1px solid var(--border); }
+
+.section-label {
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── ABOUT ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.about-headline {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(32px, 3vw, 48px);
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 32px;
+}
+.about-headline em { color: var(--accent); font-style: italic; }
+.about-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 2;
+  margin-bottom: 16px;
+}
+.about-text strong { color: var(--text); font-weight: 400; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.stat {
+  background: var(--bg2);
+  padding: 28px 24px;
+}
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 42px;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+/* ── PROJECTS ── */
+.projects-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+
+.project-row {
+  background: var(--bg2);
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 32px;
+  align-items: center;
+  cursor: pointer;
+  transition: background .2s;
+  text-decoration: none;
+}
+.project-row:hover { background: rgba(255,255,255,0.03); }
+.project-row:hover .project-arrow { transform: translateX(4px); color: var(--accent); }
+
+.project-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  color: rgba(255,255,255,0.08);
+  line-height: 1;
+}
+.project-main {}
+.project-type {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.project-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.project-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 600px;
+}
+.project-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.tag {
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.tag.accent { color: var(--accent); border-color: rgba(232,168,124,0.2); }
+.tag.blue { color: var(--accent2); border-color: rgba(126,184,212,0.2); }
+.tag.purple { color: var(--accent3); border-color: rgba(168,159,216,0.2); }
+
+.project-arrow {
+  font-size: 20px;
+  color: var(--muted);
+  transition: all .2s;
+}
+
+/* ── EXPERIENCE ── */
+.exp-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.exp-row {
+  background: var(--bg2);
+  padding: 28px 40px;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 40px;
+}
+.exp-date { font-size: 11px; color: var(--muted); padding-top: 2px; }
+.exp-title { font-size: 14px; color: var(--white); margin-bottom: 4px; }
+.exp-org { font-size: 11px; color: var(--accent); margin-bottom: 8px; }
+.exp-desc { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+/* ── CONTACT ── */
+.contact-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.contact-headline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 5vw, 80px);
+  line-height: .95;
+  color: var(--white);
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+}
+.contact-headline span { color: var(--accent); }
+.contact-text { font-size: 13px; color: var(--muted); line-height: 1.9; margin-bottom: 32px; }
+.contact-links { display: flex; flex-direction: column; gap: 10px; }
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color .2s;
+}
+.contact-link:hover { border-color: rgba(232,168,124,0.3); }
+.contact-link-icon { font-size: 16px; width: 24px; text-align: center; }
+.contact-link-text { font-size: 12px; color: var(--muted); }
+.contact-link:hover .contact-link-text { color: var(--text); }
+
+.contact-form { display: flex; flex-direction: column; gap: 12px; }
+.form-field {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s;
+  resize: none;
+}
+.form-field::placeholder { color: var(--muted); }
+.form-field:focus { border-color: rgba(232,168,124,0.4); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.footer-text { font-size: 10px; color: var(--muted); letter-spacing: 2px; }
+.footer-right { display: flex; gap: 24px; }
+.footer-link { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-decoration: none; }
+.footer-link:hover { color: var(--accent); }
+
+/* ── DIVIDER ── */
+.divider-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 80px;
+  color: rgba(255,255,255,0.03);
+  letter-spacing: 8px;
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  user-select: none;
+  overflow: hidden;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">E<span>.</span>AIONO</div>
+  <div class="nav-links">
+    <a href="#about" class="nav-link">About</a>
+    <a href="#projects" class="nav-link">Projects</a>
+    <a href="#experience" class="nav-link">Experience</a>
+    <a href="#contact" class="nav-link">Contact</a>
+  </div>
+  <div class="nav-dot"></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-number">EA</div>
+
+  <div class="hero-tag">Available for opportunities · Lā'ie, Hawai'i</div>
+
+  <h1 class="hero-name">
+    EZRA<br>
+    <span class="line2">AIONO</span>
+  </h1>
+
+  <p class="hero-tagline">
+    <strong>BYU–Hawaii IT student.</strong> Hard worker. Always learning, always improving.
+  </p>
+
+  <div class="hero-skills">
+    <span class="skill">Python</span>
+    <span class="skill">SQL</span>
+    <span class="skill">React</span>
+    <span class="skill">Claude API</span>
+    <span class="skill">Tableau</span>
+    <span class="skill">Power BI</span>
+    <span class="skill">AWS</span>
+    <span class="skill">Azure</span>
+    <span class="skill">TensorFlow.js</span>
+    <span class="skill">Linux</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">View Projects</a>
+    <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    SCROLL
+  </div>
+</section>
+
+<div class="divider-text">POLYNESIAN CULTURAL CENTER · BYU–HAWAII · INFORMATION TECHNOLOGY</div>
+
+<section id="about">
+  <div class="section-label">About</div>
+  <div class="about-grid">
+    <div>
+      <h2 class="about-headline">Student. Worker.<br><em>Problem Solver.</em></h2>
+      <p class="about-text">I'm a junior at <strong>BYU–Hawaii</strong> studying Information Technology with minors in Business Management – Supply Chain Operations and Pacific Island Studies.</p>
+      <p class="about-text">I currently work as a <strong>Guest Experience Specialist</strong> at the Polynesian Cultural Center, where I focus on customer journey mapping, quality assurance, and new product development.</p>
+      <p class="about-text">I take my work seriously, show up prepared, and genuinely care about the people and organizations I work with. I hold a <strong>Google Data Analytics Certificate</strong> and am always working to get better.</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num">2027</div>
+        <div class="stat-label">Expected graduation</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">IT</div>
+        <div class="stat-label">B.S. · BYU–Hawaii</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">PCC</div>
+        <div class="stat-label">Guest Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">GDA</div>
+        <div class="stat-label">Google Certificate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <div class="projects-list">
+
+    <div class="project-row">
+      <div class="project-num">01</div>
+      <div class="project-main">
+        <div class="project-type">Data · Analytics · Forecasting</div>
+        <div class="project-title">Hawaii Visitor Market Intelligence</div>
+        <div class="project-desc">Interactive dashboard tracking $23.5B in Hawaii tourism spend across 5 global markets with trend-based forecasting through 2027. Built on real DBEDT data, framed through a PCC strategic lens.</div>
+        <div class="project-tags">
+          <span class="tag accent">React</span>
+          <span class="tag accent">Chart.js</span>
+          <span class="tag">DBEDT Data</span>
+          <span class="tag">Forecasting</span>
+        </div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-num">02</div>
+      <div class="project-main">
+        <div class="project-type">AI · Computer Vision · Machine Learning</div>
+        <div class="project-title">PCC Artifact & Plant Identifier</div>
+        <div class="project-desc">Live camera scanning tool that identifies Pacific cultural artifacts and plants using Claude Vision API with PCC's tour script as grounding context. Phase 2 uses MobileNet + KNN transfer learning for on-device classification.</div>
+        <div class="project-tags">
+          <span class="tag blue">Claude Vision</span>
+          <span class="tag blue">TensorFlow.js</span>
+          <span class="tag blue">MobileNet</span>
+          <span class="tag">Transfer Learning</span>
+        </div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+
+    <div class="project-row">
+      <div class="project-num">03</div>
+      <div class="project-main">
+        <div class="project-type">Product · AI · Guest Experience</div>
+        <div class="project-title">PCC Smart Itinerary Builder</div>
+        <div class="project-desc">Proposed PCC app feature that generates personalized guest schedules based on arrival time, group type, and interests — with contextual ticket upgrade recommendations surfaced at the right moment.</div>
+        <div class="project-tags">
+          <span class="tag purple">React</span>
+          <span class="tag purple">Claude API</span>
+          <span class="tag">Product Design</span>
+        </div>
+      </div>
+      <div class="project-arrow">→</div>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <div class="exp-grid">
+
+    <div class="exp-row">
+      <div class="exp-date">2025 — Present</div>
+      <div>
+        <div class="exp-title">Guest Experience Specialist</div>
+        <div class="exp-org">Polynesian Cultural Center · Lā'ie, Hawai'i</div>
+        <div class="exp-desc">Newly created role focused on customer journey mapping, quality assurance, benefit-cost analysis, and new product development. Presents findings to a president's board.</div>
+      </div>
+    </div>
+
+    <div class="exp-row">
+      <div class="exp-date">2023 — Present</div>
+      <div>
+        <div class="exp-title">B.S. Information Technology</div>
+        <div class="exp-org">BYU–Hawaii · Class of 2027</div>
+        <div class="exp-desc">Minors in Business Management – Supply Chain Operations & Analytics, and Pacific Island Studies. Coursework spans systems analysis, Linux administration, AWS, data analytics, and software development.</div>
+      </div>
+    </div>
+
+    <div class="exp-row">
+      <div class="exp-date">2024</div>
+      <div>
+        <div class="exp-title">Google Data Analytics Certificate</div>
+        <div class="exp-org">Google · Coursera</div>
+        <div class="exp-desc">Completed professional certificate covering data cleaning, analysis, visualization, and storytelling with tools including SQL, R, Tableau, and spreadsheets.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <div class="section-label">Contact</div>
+  <div class="contact-inner">
+    <div>
+      <h2 class="contact-headline">LET'S<br><span>CONNECT</span></h2>
+      <p class="contact-text">Open to internships, part-time roles, and project collaborations in data analytics, AI, and operations.</p>
+      <div class="contact-links">
+        <a href="mailto:ezra@email.com" class="contact-link">
+          <span class="contact-link-icon">✉</span>
+          <span class="contact-link-text">ezra@email.com</span>
+        </a>
+        <a href="#" class="contact-link">
+          <span class="contact-link-icon">in</span>
+          <span class="contact-link-text">linkedin.com/in/ezraaiono</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <input class="form-field" type="text" placeholder="Your name"/>
+      <input class="form-field" type="email" placeholder="Your email"/>
+      <textarea class="form-field" rows="5" placeholder="Your message"></textarea>
+      <button class="btn btn-primary" style="align-self:flex-start">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-text">© 2026 · EZRA AIONO · BYU–HAWAII</div>
+  <div class="footer-right">
+    <a href="#about" class="footer-link">About</a>
+    <a href="#projects" class="footer-link">Projects</a>
+    <a href="#contact" class="footer-link">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
