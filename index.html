@@ -256,7 +256,7 @@ section{padding:100px 48px}
 /* ── Phone mockup stage ── */
 .ph-screens{
   position:relative;
-  height:100vh;
+  height:140vh;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -326,16 +326,16 @@ section{padding:100px 48px}
 }
 
 /* Phone layout — center large, flanking smaller */
-.phone-c{width:220px;height:476px;z-index:3;transform:translateY(0) rotate(0deg)}
-.phone-l{width:180px;height:390px;z-index:2;transform:translate(-190px, 30px) rotate(-6deg)}
-.phone-r{width:180px;height:390px;z-index:2;transform:translate(190px, 30px) rotate(6deg)}
-.phone-far-l{width:150px;height:324px;z-index:1;transform:translate(-310px, 60px) rotate(-12deg);opacity:.6}
-.phone-far-r{width:150px;height:324px;z-index:1;transform:translate(310px, 60px) rotate(12deg);opacity:.6}
+.phone-c{width:320px;height:693px;z-index:3;transform:translateY(0) rotate(0deg)}
+.phone-l{width:260px;height:563px;z-index:2;transform:translate(-275px, 40px) rotate(-6deg)}
+.phone-r{width:260px;height:563px;z-index:2;transform:translate(275px, 40px) rotate(6deg)}
+.phone-far-l{width:220px;height:476px;z-index:1;transform:translate(-460px, 80px) rotate(-12deg);opacity:.6}
+.phone-far-r{width:220px;height:476px;z-index:1;transform:translate(460px, 80px) rotate(12deg);opacity:.6}
 
 /* Hover lift */
 .ph-screens:hover .phone-c{transform:translateY(-10px)}
-.ph-screens:hover .phone-l{transform:translate(-195px, 24px) rotate(-5deg)}
-.ph-screens:hover .phone-r{transform:translate(195px, 24px) rotate(5deg)}
+.ph-screens:hover .phone-l{transform:translate(-280px, 34px) rotate(-5deg)}
+.ph-screens:hover .phone-r{transform:translate(280px, 34px) rotate(5deg)}
 
 /* ── Scroll reveal ── */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease}
@@ -398,7 +398,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   .ph-inner{grid-template-columns:1fr;min-height:auto}
   .ph-copy{padding:80px 24px 40px}
   .ph-screens{height:460px}
-  .phone-c{width:160px;height:346px}
+  .phone-c{width:240px;height:520px}
   .phone-l,.phone-r{display:none}
   .phone-far-l,.phone-far-r{display:none}
   .about-grid{grid-template-columns:1fr}
@@ -454,8 +454,8 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
     0 0 0 11px #0d0d1a,
     0 32px 80px rgba(0,0,0,0.8),
     0 8px 24px rgba(62,207,207,0.1);
-  width: 220px;
-  height: 476px;
+  width: 300px;
+  height: 650px;
   position: relative;
   flex-shrink: 0;
 }
@@ -552,22 +552,22 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 }
 
 /* ── ITIN phone stage — 3 phones only ── */
-.phone-itin-c  { width:230px; height:498px; z-index:3; transform:translateY(0) rotate(0deg) }
-.phone-itin-l  { width:185px; height:400px; z-index:2; transform:translate(-200px, 28px) rotate(-6deg) }
-.phone-itin-r  { width:185px; height:400px; z-index:2; transform:translate(200px, 28px) rotate(6deg) }
+.phone-itin-c  { width:320px; height:693px; z-index:3; transform:translateY(0) rotate(0deg) }
+.phone-itin-l  { width:260px; height:563px; z-index:2; transform:translate(-280px, 40px) rotate(-6deg) }
+.phone-itin-r  { width:260px; height:563px; z-index:2; transform:translate(280px, 40px) rotate(6deg) }
 .ph-screens:hover .phone-itin-c { transform:translateY(-10px) }
-.ph-screens:hover .phone-itin-l { transform:translate(-205px,22px) rotate(-5deg) }
-.ph-screens:hover .phone-itin-r { transform:translate(205px,22px) rotate(5deg) }
+.ph-screens:hover .phone-itin-l { transform:translate(-285px,34px) rotate(-5deg) }
+.ph-screens:hover .phone-itin-r { transform:translate(285px,34px) rotate(5deg) }
 /* Itin notch fix for side phones */
 .phone-itin-l .phone-notch,
-.phone-itin-r .phone-notch { width:70px; height:20px; top:7px; }
+.phone-itin-r .phone-notch { width:80px; height:22px; top:8px; }
 
 @media(max-width:900px){
   .two-roles-wrap { padding: 60px 24px 40px }
   .two-roles-grid { grid-template-columns: 1fr; gap: 40px }
   .roles-divider { flex-direction: row; padding: 0 }
   .roles-divider-line { width: 40px; height: 1px; background: rgba(62,207,207,0.3) }
-  .role-phone { width: 180px; height: 390px }
+  .role-phone { width: 240px; height: 520px }
   .roles-divider-badge { padding: 8px 14px }
 }
 
@@ -593,9 +593,9 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
 /* Phone-in-card frame */
 .feature-card-phone {
-  width: 160px;
-  height: 346px;
-  border-radius: 36px;
+  width: 220px;
+  height: 476px;
+  border-radius: 44px;
   overflow: hidden;
   position: relative;
   flex-shrink: 0;
