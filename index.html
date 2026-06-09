@@ -314,8 +314,11 @@ section{padding:100px 48px}
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:top center;
   display:block;
-  /* Easy swap: just update src attribute */
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  -ms-interpolation-mode:nearest-neighbor;
 }
 
 /* Phone layout — center large, flanking smaller */
@@ -477,6 +480,9 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   object-fit: cover;
   object-position: top;
   display: block;
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  -ms-interpolation-mode:nearest-neighbor;
 }
 .role-caption {
   font-size: 11px;
@@ -544,6 +550,9 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 .ph-screens:hover .phone-itin-c { transform:translateY(-10px) }
 .ph-screens:hover .phone-itin-l { transform:translate(-205px,22px) rotate(-5deg) }
 .ph-screens:hover .phone-itin-r { transform:translate(205px,22px) rotate(5deg) }
+/* Itin notch fix for side phones */
+.phone-itin-l .phone-notch,
+.phone-itin-r .phone-notch { width:70px; height:20px; top:7px; }
 
 @media(max-width:900px){
   .two-roles-wrap { padding: 60px 24px 40px }
@@ -566,32 +575,74 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 .feature-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border-right: 1px solid var(--border);
   background: linear-gradient(180deg, #0d1528 0%, #07080f 100%);
   overflow: hidden;
+  padding: 48px 32px 40px;
 }
 .feature-card:last-child { border-right: none; }
-.feature-card-screen {
-  width: 100%;
-  aspect-ratio: 9/16;
+
+/* Phone-in-card frame */
+.feature-card-phone {
+  width: 160px;
+  height: 346px;
+  border-radius: 36px;
   overflow: hidden;
   position: relative;
-  border-bottom: 1px solid var(--border);
-  background: #111936;
+  flex-shrink: 0;
+  margin-bottom: 32px;
+  box-shadow:
+    0 0 0 8px #1a1a2e,
+    0 0 0 10px #0d0d1a,
+    0 28px 70px rgba(0,0,0,0.85),
+    0 6px 20px rgba(62,207,207,0.1);
+  transition: transform .4s cubic-bezier(.25,.46,.45,.94), box-shadow .4s;
 }
-.feature-card-screen img {
+.feature-card:hover .feature-card-phone {
+  transform: translateY(-8px);
+  box-shadow:
+    0 0 0 8px #1a1a2e,
+    0 0 0 10px #0d0d1a,
+    0 40px 90px rgba(0,0,0,0.9),
+    0 6px 28px rgba(62,207,207,0.18);
+}
+/* Phone top bar */
+.feature-card-phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 22px;
+  background: #111936;
+  border-radius: 36px 36px 0 0;
+  z-index: 10;
+}
+/* Phone notch */
+.feature-card-phone::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px; height: 18px;
+  background: #000;
+  border-radius: 14px;
+  z-index: 20;
+}
+.feature-card-phone img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: top center;
   display: block;
-  transition: transform .5s cubic-bezier(.25,.46,.45,.94);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
 }
-.feature-card:hover .feature-card-screen img {
-  transform: scale(1.03) translateY(-8px);
-}
+
 .feature-card-copy {
-  padding: 28px 28px 36px;
+  padding: 0;
+  text-align: center;
 }
 .feature-card-num {
   font-size: 9px;
@@ -615,7 +666,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
 @media(max-width:900px){
   .feature-strip.gxd-strip { grid-template-columns: 1fr; }
-  .feature-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .feature-card { border-right: none; border-bottom: 1px solid var(--border); padding: 40px 24px 32px; }
   .feature-card:last-child { border-bottom: none; }
 }
 
@@ -784,7 +835,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 <div class="feature-strip gxd-strip">
 
   <div class="feature-card reveal">
-    <div class="feature-card-screen">
+    <div class="feature-card-phone">
       <img src="assets/screenshots/gxd-signs.png" alt="GXD — Signs capacity grid" loading="lazy"/>
     </div>
     <div class="feature-card-copy">
@@ -795,7 +846,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   </div>
 
   <div class="feature-card reveal reveal-delay-1">
-    <div class="feature-card-screen">
+    <div class="feature-card-phone">
       <img src="assets/screenshots/gxd-schedule.png" alt="GXD — Guide schedule" loading="lazy"/>
     </div>
     <div class="feature-card-copy">
@@ -806,7 +857,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   </div>
 
   <div class="feature-card reveal reveal-delay-2">
-    <div class="feature-card-screen">
+    <div class="feature-card-phone">
       <img src="assets/screenshots/gxd-help.png" alt="GXD — Help and emergency contacts" loading="lazy"/>
     </div>
     <div class="feature-card-copy">
