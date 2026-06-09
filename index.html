@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ezra Aiono — Portfolio</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" rel="stylesheet"/>
 <style>
 /* ─────────────────────────────────────────────
    SCREENSHOT SWAP SYSTEM
@@ -740,7 +741,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
     <div>
       <h2 class="about-headline">Student. Builder.<br><em>Problem Solver.</em></h2>
       <p class="about-text">I'm a junior at <strong>BYU–Hawaii</strong> studying Information Technology with minors in Business Management – Supply Chain Operations & Analytics and Pacific Island Studies.</p>
-      <p class="about-text">I work as a <strong>Guest Experience Specialist</strong> at the Polynesian Cultural Center, where I co-launched a new department focused on customer journey mapping, quality assurance, and new product development — and present findings to a president's board.</p>
+      <p class="about-text">I work as a <strong>Guest Experience Specialist</strong> at the Polynesian Cultural Center, where I co-launched a new department focused on customer journey mapping, quality assurance, and new product development — and prepare findings for leadership review.</p>
       <p class="about-text">Before that, I spent two years leading a large team across Samoa and American Samoa on a full-time mission — an experience that shaped how I lead, listen, and work across cultures. At a place like PCC, that fluency isn't a side note. It's how I design tools people actually want to use.</p>
       <p class="about-text"><strong>Foundation:</strong> AWS (EC2, S3) · Linux administration · Windows Server/AD · Tableau · Power BI · Google Data Analytics Certificate</p>
     </div>
@@ -750,8 +751,8 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
         <div class="stat-label">Guests guided across cultural tours</div>
       </div>
       <div class="stat">
-        <div class="stat-num">40+</div>
-        <div class="stat-label">Tour guides served by Guest Xperience</div>
+        <div class="stat-num">125+</div>
+        <div class="stat-label">Tour guides the app was built and designed for</div>
       </div>
       <div class="stat">
         <div class="stat-num">14</div>
@@ -890,10 +891,10 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 <div class="ai-explainer reveal">
   <div class="ai-explainer-label">04 — HOW THE AI WORKS</div>
   <div class="ai-explainer-body">
-    <p><strong>The problem:</strong> Sign capacity at PCC changes by the minute across 14 shows. Guides historically learn about crowding secondhand — by radio, by word of mouth, or by walking up to a full show. Raw numbers alone don't help a guide mid-tour; they need to know <em>what to do about it</em>.</p>
+    <p><strong>The problem:</strong> PCC's tour guide team runs on a 125+ person group chat. Schedule visibility, sign capacity updates, and operational coordination all happen in the same thread — which means critical information gets buried in noise. There's no way to see who's working, what shows have capacity, or escalate an issue without spamming 125 people. Guides are left to figure it out mid-tour.</p>
     <p><strong>The architecture:</strong> Google Sheets (live sign counts, maintained by ops) → polling layer in the app → <strong>deterministic threshold engine</strong> (Normal / Busy Day rules, color-coded states) → <strong>Claude Sonnet</strong> interprets the current state and generates short, actionable guidance per show — e.g., flagging which shows are trending toward capacity and what a guide leading a group of 40 should do next.</p>
     <p><strong>The key design decision:</strong> the alerts themselves are rule-based, not AI-generated. Capacity thresholds are deterministic logic — they must fire the same way every time, with zero latency and zero API cost. Claude sits <em>on top</em> of that layer, doing what LLMs are actually good at: turning a wall of numbers into one sentence a guide can act on while walking. Rules for reliability, AI for interpretation.</p>
-    <p><strong>What I'd build next:</strong> historical sign data is already being logged through the app — the next layer is using it to <em>predict</em> busy windows by show and day type, instead of just reporting them.</p>
+    <p><strong>What I'd build next:</strong> the app is architected to log historical sign data — the next layer would use it to <em>predict</em> busy windows by show and day type, instead of just reporting them.</p>
     <p style="font-size:11px;color:var(--muted);margin-top:16px;">Prototype stage — built and demoed within the GXD team. Not yet in production deployment.</p>
   </div>
 </div>
@@ -913,7 +914,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
       <h2 class="ph-title">SMART<br>ITINERARY<br>BUILDER</h2>
       <p class="ph-subtitle">Your perfect PCC day, built in seconds.</p>
       <p class="ph-desc">
-        A guest-facing concept app that generates a personalized PCC day from three inputs: arrival time, group type, and ticket level. Real show photography, walking-order logic, hidden-gem callouts drawn from guide knowledge, and upgrade prompts surfaced at the moment of peak engagement.
+        A guest-facing concept app that generates a personalized PCC day from three inputs: arrival time, group type, and ticket level. Real show photography, a custom route built around walking order and show timing, insider picks drawn from guide knowledge, and upgrade prompts surfaced at the moment of peak engagement.
       </p>
       <div class="ph-tags">
         <span class="ph-tag">React Native</span>
@@ -923,7 +924,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
         <span class="ph-tag">Ticket Upgrades</span>
       </div>
       <div class="ph-links">
-        <a href="#contact" class="ph-link ghost">Code available on request</a>
+        <a href="https://github.com/eaiono66/guest-xperience" target="_blank" class="ph-link primary">↗ View on GitHub</a>
         <a href="#contact" class="ph-link ghost">Request Demo</a>
       </div>
     </div>
@@ -956,19 +957,19 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 <!-- Itinerary Feature Strip -->
 <div class="feature-strip itin-strip">
   <div class="feature-item reveal">
-    <div class="feature-icon">🗓️</div>
-    <div class="feature-title">Personalized Scheduling</div>
-    <div class="feature-desc">Claude API generates a custom itinerary from arrival time, group type, and ticket level — optimized for walking route and show timing.</div>
+    <div class="feature-icon"><i class="ti ti-calendar"></i></div>
+    <div class="feature-title">Day Planner</div>
+    <div class="feature-desc">Optimized for walking route and show timing.</div>
   </div>
   <div class="feature-item reveal reveal-delay-1">
-    <div class="feature-icon">💎</div>
-    <div class="feature-title">Hidden Gem Callouts</div>
-    <div class="feature-desc">Surfaces local-favorite shows most guests miss, complete with guide tips and attendance advisories pulled from real PCC operational data.</div>
+    <div class="feature-icon"><i class="ti ti-map-pin"></i></div>
+    <div class="feature-title">Insider Picks</div>
+    <div class="feature-desc">Spots most guests miss, drawn from guide knowledge.</div>
   </div>
   <div class="feature-item reveal reveal-delay-2">
-    <div class="feature-icon">🎟️</div>
+    <div class="feature-icon"><i class="ti ti-arrow-up-circle"></i></div>
     <div class="feature-title">Smart Upgrade Moments</div>
-    <div class="feature-desc">Contextual upgrade prompts appear at the end of the itinerary — "Make tonight unforgettable" — timed when guests are most engaged.</div>
+    <div class="feature-desc">Upgrade prompts timed for when guests are most engaged.</div>
   </div>
 </div>
 
@@ -976,7 +977,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 <div class="ai-explainer reveal">
   <div class="ai-explainer-label">04 — HOW THE AI WORKS</div>
   <div class="ai-explainer-body">
-    <p><strong>The problem:</strong> Building a valid PCC itinerary is a constraint-satisfaction problem — fixed show times, walking distances between villages, ticket-level access, and meal windows all have to line up. LLMs are unreliable at exactly this kind of time math. Asking Claude to "plan my day" from scratch produces schedules that look great and physically can't be walked.</p>
+    <p><strong>The problem:</strong> "Not knowing what to do" or feeling lost is the #3 complaint among self-guided PCC guests — and there's currently nothing built to solve it. Guests arrive with a ticket and no clear path through the park. Shows conflict, villages are spread out, and meal windows get missed. The result is a frustrating day that undersells what PCC actually offers.</p>
     <p><strong>The architecture — a hybrid engine:</strong> A <strong>rule-based scheduling core</strong> handles the hard constraints: show times, village walking order, ticket-tier access, and time-window conflicts. It guarantees every generated itinerary is physically possible. <strong>Claude</strong> then handles everything that should feel human: adapting tone and pacing to the group type (honeymooners get a different day than a family with toddlers), selecting hidden-gem recommendations, and writing the contextual upgrade moment — "Make tonight unforgettable" — timed for when the guest is most engaged.</p>
     <p><strong>Why hybrid:</strong> deterministic logic where correctness matters, generative AI where personality matters. It's also cheaper and faster — one focused Claude call per itinerary instead of an LLM brute-forcing a schedule across multiple retries.</p>
     <p><strong>The business layer:</strong> the upgrade prompt isn't decoration. It's designed to lift ticket-upgrade conversion by placing the offer at the end of a personalized plan — the moment the guest can picture their evening.</p>
@@ -1030,7 +1031,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   <div class="contact-inner">
     <div>
       <h2 class="contact-headline">LET'S<br><span>CONNECT</span></h2>
-      <p class="contact-text">Actively seeking to contribute to <strong>AI and data initiatives at PCC</strong> — and open to internships and collaborations in AI engineering, data analytics, and operations.</p>
+      <p class="contact-text">Looking to go deeper on AI and data work — at PCC and beyond. Open to internships, collaborations, and conversations.</p>
       <div class="contact-links">
         <a href="mailto:ezra.aiono@gmail.com" class="contact-link">
           <span class="contact-link-icon">✉</span>
