@@ -317,9 +317,6 @@ section{padding:100px 48px}
   object-fit:contain;
   object-position:top center;
   display:block;
-  image-rendering:-webkit-optimize-contrast;
-  image-rendering:crisp-edges;
-  -ms-interpolation-mode:nearest-neighbor;
   -webkit-transform:translateZ(0);
   transform:translateZ(0);
   will-change:transform;
@@ -327,11 +324,11 @@ section{padding:100px 48px}
 }
 
 /* Phone layout — center large, flanking smaller */
-.phone-c{width:320px;height:693px;z-index:3;transform:translateY(0) rotate(0deg)}
-.phone-l{width:260px;height:563px;z-index:2;transform:translate(-275px, 40px) rotate(-6deg)}
-.phone-r{width:260px;height:563px;z-index:2;transform:translate(275px, 40px) rotate(6deg)}
-.phone-far-l{width:220px;height:476px;z-index:1;transform:translate(-460px, 80px) rotate(-12deg);opacity:.6}
-.phone-far-r{width:220px;height:476px;z-index:1;transform:translate(460px, 80px) rotate(12deg);opacity:.6}
+.phone-c{width:320px;height:711px;z-index:3;transform:translateY(0) rotate(0deg)}
+.phone-l{width:260px;height:578px;z-index:2;transform:translate(-275px, 40px) rotate(-6deg)}
+.phone-r{width:260px;height:578px;z-index:2;transform:translate(275px, 40px) rotate(6deg)}
+.phone-far-l{width:220px;height:489px;z-index:1;transform:translate(-460px, 80px) rotate(-12deg);opacity:.6}
+.phone-far-r{width:220px;height:489px;z-index:1;transform:translate(460px, 80px) rotate(12deg);opacity:.6}
 
 /* Hover lift */
 .ph-screens:hover .phone-c{transform:translateY(-10px)}
@@ -399,7 +396,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   .ph-inner{grid-template-columns:1fr;min-height:auto}
   .ph-copy{padding:80px 24px 40px}
   .ph-screens{height:460px}
-  .phone-c{width:240px;height:520px}
+  .phone-c{width:240px;height:533px}
   .phone-l,.phone-r{display:none}
   .phone-far-l,.phone-far-r{display:none}
   .about-grid{grid-template-columns:1fr}
@@ -456,7 +453,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
     0 32px 80px rgba(0,0,0,0.8),
     0 8px 24px rgba(62,207,207,0.1);
   width: 300px;
-  height: 650px;
+  height: 667px;
   position: relative;
   flex-shrink: 0;
 }
@@ -485,9 +482,6 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   object-fit: contain;
   object-position: top center;
   display: block;
-  image-rendering:-webkit-optimize-contrast;
-  image-rendering:crisp-edges;
-  -ms-interpolation-mode:nearest-neighbor;
   -webkit-transform:translateZ(0);
   transform:translateZ(0);
   will-change:transform;
@@ -553,9 +547,9 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 }
 
 /* ── ITIN phone stage — 3 phones only ── */
-.phone-itin-c  { width:320px; height:693px; z-index:3; transform:translateY(0) rotate(0deg) }
-.phone-itin-l  { width:260px; height:563px; z-index:2; transform:translate(-280px, 40px) rotate(-6deg) }
-.phone-itin-r  { width:260px; height:563px; z-index:2; transform:translate(280px, 40px) rotate(6deg) }
+.phone-itin-c  { width:320px; height:711px; z-index:3; transform:translateY(0) rotate(0deg) }
+.phone-itin-l  { width:260px; height:578px; z-index:2; transform:translate(-280px, 40px) rotate(-6deg) }
+.phone-itin-r  { width:260px; height:578px; z-index:2; transform:translate(280px, 40px) rotate(6deg) }
 .ph-screens:hover .phone-itin-c { transform:translateY(-10px) }
 .ph-screens:hover .phone-itin-l { transform:translate(-285px,34px) rotate(-5deg) }
 .ph-screens:hover .phone-itin-r { transform:translate(285px,34px) rotate(5deg) }
@@ -568,7 +562,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   .two-roles-grid { grid-template-columns: 1fr; gap: 40px }
   .roles-divider { flex-direction: row; padding: 0 }
   .roles-divider-line { width: 40px; height: 1px; background: rgba(62,207,207,0.3) }
-  .role-phone { width: 240px; height: 520px }
+  .role-phone { width: 240px; height: 533px }
   .roles-divider-badge { padding: 8px 14px }
 }
 
@@ -595,7 +589,7 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 /* Phone-in-card frame */
 .feature-card-phone {
   width: 220px;
-  height: 476px;
+  height: 489px;
   border-radius: 44px;
   overflow: hidden;
   position: relative;
@@ -644,9 +638,6 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
   object-fit: contain;
   object-position: top center;
   display: block;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  -ms-interpolation-mode: nearest-neighbor;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   will-change: transform;
@@ -690,6 +681,21 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 .ai-explainer-body p:last-child{margin-bottom:0}
 .ai-explainer-body strong{color:var(--white)}
 @media(max-width:600px){.ai-explainer{padding:48px 24px 64px}}
+
+/* ── Picture element sizing — restore fill behaviour inside fixed-height phone frames ── */
+.phone-frame picture,
+.role-phone picture,
+.feature-card-phone picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+picture > img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
 
 </style>
 </head>
@@ -811,7 +817,14 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
             <div class="role-tag"><span>Manager</span> · Operations</div>
             <div class="role-phone">
               <div class="role-phone-notch"></div>
-              <img id="gxd-screen-manager" src="assets/screenshots/gxd-dashboard.png" alt="Guest Xperience — Manager Dashboard" loading="lazy"/>
+              <img
+                id="gxd-screen-manager"
+                src="assets/screenshots/gxd-dashboard@2x.png"
+                srcset="assets/screenshots/gxd-dashboard@1x.png 320w, assets/screenshots/gxd-dashboard@2x.png 640w"
+                sizes="(max-width: 900px) 240px, 300px"
+                alt="Guest Xperience — Manager Dashboard"
+                loading="lazy"
+              >
             </div>
             <p class="role-caption">Live ops pulse, Huki seating, guide roster with dispatch status</p>
           </div>
@@ -837,7 +850,14 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
             <div class="role-tag"><span>Guide</span> · My Day</div>
             <div class="role-phone">
               <div class="role-phone-notch"></div>
-              <img id="gxd-screen-guide" src="assets/screenshots/gxd-myday.png" alt="Guest Xperience — Guide My Day" loading="lazy"/>
+              <img
+                id="gxd-screen-guide"
+                src="assets/screenshots/gxd-myday@2x.png"
+                srcset="assets/screenshots/gxd-myday@1x.png 320w, assets/screenshots/gxd-myday@2x.png 640w"
+                sizes="(max-width: 900px) 240px, 300px"
+                alt="Guest Xperience — Guide My Day"
+                loading="lazy"
+              >
             </div>
             <p class="role-caption">Broadcast alerts, next group dispatch, sign updates at a glance</p>
           </div>
@@ -854,7 +874,13 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
   <div class="feature-card reveal">
     <div class="feature-card-phone">
-      <img src="assets/screenshots/gxd-signs.png" alt="GXD — Signs capacity grid" loading="lazy"/>
+      <img
+        src="assets/screenshots/gxd-signs@2x.png"
+        srcset="assets/screenshots/gxd-signs@1x.png 320w, assets/screenshots/gxd-signs@2x.png 640w"
+        sizes="220px"
+        alt="GXD — Signs capacity grid"
+        loading="lazy"
+      >
     </div>
     <div class="feature-card-copy">
       <div class="feature-card-num">01 — SIGNS</div>
@@ -865,7 +891,13 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
   <div class="feature-card reveal reveal-delay-1">
     <div class="feature-card-phone">
-      <img src="assets/screenshots/gxd-schedule.png" alt="GXD — Guide schedule" loading="lazy"/>
+      <img
+        src="assets/screenshots/gxd-schedule@2x.png"
+        srcset="assets/screenshots/gxd-schedule@1x.png 320w, assets/screenshots/gxd-schedule@2x.png 640w"
+        sizes="220px"
+        alt="GXD — Guide schedule"
+        loading="lazy"
+      >
     </div>
     <div class="feature-card-copy">
       <div class="feature-card-num">02 — SCHEDULE</div>
@@ -876,7 +908,13 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
   <div class="feature-card reveal reveal-delay-2">
     <div class="feature-card-phone">
-      <img src="assets/screenshots/gxd-help.png" alt="GXD — Help and emergency contacts" loading="lazy"/>
+      <img
+        src="assets/screenshots/gxd-help@2x.png"
+        srcset="assets/screenshots/gxd-help@1x.png 320w, assets/screenshots/gxd-help@2x.png 640w"
+        sizes="220px"
+        alt="GXD — Help and emergency contacts"
+        loading="lazy"
+      >
     </div>
     <div class="feature-card-copy">
       <div class="feature-card-num">03 — HELP</div>
@@ -935,17 +973,38 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 
         <div class="phone-frame phone-itin-l reveal reveal-delay-2">
           <div class="phone-notch"></div>
-          <img id="itin-screen-l" src="assets/screenshots/itin-group.png" alt="Itinerary Builder — Group Type" loading="lazy"/>
+          <img
+            id="itin-screen-l"
+            src="assets/screenshots/itin-group@2x.png"
+            srcset="assets/screenshots/itin-group@1x.png 320w, assets/screenshots/itin-group@2x.png 640w"
+            sizes="(max-width: 900px) 240px, 320px"
+            alt="Itinerary Builder — Group Type"
+            loading="lazy"
+          >
         </div>
 
         <div class="phone-frame phone-itin-c reveal reveal-delay-1">
           <div class="phone-notch"></div>
-          <img id="itin-screen-c" src="assets/screenshots/itin-schedule.png" alt="Itinerary Builder — Generated Schedule" loading="lazy"/>
+          <img
+            id="itin-screen-c"
+            src="assets/screenshots/itin-schedule@2x.png"
+            srcset="assets/screenshots/itin-schedule@1x.png 320w, assets/screenshots/itin-schedule@2x.png 640w"
+            sizes="(max-width: 900px) 240px, 320px"
+            alt="Itinerary Builder — Generated Schedule"
+            loading="lazy"
+          >
         </div>
 
         <div class="phone-frame phone-itin-r reveal reveal-delay-2">
           <div class="phone-notch"></div>
-          <img id="itin-screen-r" src="assets/screenshots/itin-building.png" alt="Itinerary Builder — Building Your Day" loading="lazy"/>
+          <img
+            id="itin-screen-r"
+            src="assets/screenshots/itin-building@2x.png"
+            srcset="assets/screenshots/itin-building@1x.png 320w, assets/screenshots/itin-building@2x.png 640w"
+            sizes="(max-width: 900px) 240px, 320px"
+            alt="Itinerary Builder — Building Your Day"
+            loading="lazy"
+          >
         </div>
 
       </div>
@@ -1062,36 +1121,9 @@ footer{border-top:1px solid var(--border);padding:24px 48px;display:flex;justify
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   SCREENSHOT CONFIG — UPDATE THESE PATHS WHEN READY
-   
-   Put your final screenshots in an /assets/screenshots/ folder
-   in your GitHub repo, then update the paths below.
-   
-   Naming convention used:
-     gxd-splash.png      → GXD login screen
-     gxd-myday.png       → My Day dashboard
-     gxd-signs.png       → Sign Tracker
-     gxd-schedule.png    → Schedule screen
-     gxd-canoe.png       → Canoe screen
-     
-     itin-group.png      → Group type selection
-     itin-arrival.png    → Arrival time picker
-     itin-schedule.png   → Generated schedule (hero)
-     itin-upgrade.png    → Upgrade CTA screen
-     itin-ticket.png     → Ticket type selection
-═══════════════════════════════════════════════════════ */
-// Screenshots are set directly on img src attributes above.
-// To update, rename your files to match and place in assets/screenshots/:
-//
-//   GXD:
-//     gxd-dashboard.png   → Manager Dashboard
-//     gxd-myday.png       → Guide My Day
-//
-//   Itinerary Builder:
-//     itin-group.png      → Group type selection
-//     itin-schedule.png   → Generated schedule
-//     itin-building.png   → Building your day loading screen
+/* Screenshots served from assets/screenshots/opt/ as responsive <picture> elements.
+   WebP srcset at 480w/720w/1080w + PNG fallback at 720w.
+   To update: replace files in assets/screenshots/opt/ keeping the same base names. */
 
 /* ═══════════════════════════════════════════════
    SCROLL REVEAL
