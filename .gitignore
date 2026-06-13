@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Environment & secrets
+.env
+.env.*
+*.env
+
+# Build output (local dev scripts only — not served)
+assets/screenshots/opt/
+assets/screenshots/optimized/
+assets/screenshots/src/
+
+# Local dev scripts (not part of the deployed site)
+generate-images.js
+scripts/optimize-images.mjs
+package.json
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor configs
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
